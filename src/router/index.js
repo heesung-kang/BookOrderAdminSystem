@@ -19,6 +19,36 @@ const router = new VueRouter({
       component: () => import("@/views/login/Login.vue"),
       meta: { unauthorized: true },
     },
+    {
+      path: "/OrderList",
+      name: "OrderList",
+      components: {
+        lnb,
+        footer,
+        contents: () => import("@/views/order/OrderList.vue"),
+      },
+      meta: { unauthorized: true },
+    },
+    {
+      path: "/OrderListDetail",
+      name: "OrderListDetail",
+      components: {
+        lnb,
+        footer,
+        contents: () => import("@/views/order/OrderListDetail.vue"),
+      },
+      meta: { unauthorized: true },
+    },
+    {
+      path: "/DeliveryOrder",
+      name: "DeliveryOrder",
+      components: {
+        lnb,
+        footer,
+        contents: () => import("@/views/order/DeliveryOrder.vue"),
+      },
+      meta: { unauthorized: true },
+    },
     //404
     {
       path: "*",

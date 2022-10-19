@@ -5,12 +5,9 @@
       <div class="system-name">서점용 도서 주문 시스템</div>
       <nav class="lnb">
         <ul @click="close">
-          <li :class="{ active: activeStatus === 1 }"><router-link to="/SearchOrder">책 검색</router-link></li>
-          <li :class="{ active: activeStatus === 2 }"><router-link to="/Cart">장바구니</router-link></li>
-          <li :class="{ active: activeStatus === 3 }"><router-link to="/OrderList">주문 목록 보기</router-link></li>
-          <li :class="{ active: activeStatus === 4 }"><router-link to="/OrderResult">내역서 확인</router-link></li>
-          <li :class="{ active: activeStatus === 5 }"><router-link to="/ReleaseList">출고 목록 보기</router-link></li>
-          <li :class="{ active: activeStatus === 6 }"><router-link to="/ReleaseStatus">출고 현황 보기</router-link></li>
+          <li :class="{ active: activeStatus === 1 }"><router-link to="/OrderList">주문 목록 보기</router-link></li>
+          <li :class="{ active: activeStatus === 2 }"><router-link to="/OrderListDetail">주문 상세 보기 및 내역서 회신</router-link></li>
+          <li :class="{ active: activeStatus === 3 }"><router-link to="/DeliveryOrder">결제 내역 보기 및 출고 지시</router-link></li>
         </ul>
       </nav>
     </aside>
@@ -50,23 +47,14 @@ export default {
      */
     menuDefaultSetup() {
       switch (this.routeName) {
-        case "SearchOrder":
+        case "OrderList":
           this.activeStatus = 1;
           break;
-        case "Cart":
+        case "OrderListDetail":
           this.activeStatus = 2;
           break;
-        case "OrderList":
+        case "DeliveryOrder":
           this.activeStatus = 3;
-          break;
-        case "OrderResult":
-          this.activeStatus = 4;
-          break;
-        case "ReleaseList":
-          this.activeStatus = 5;
-          break;
-        case "ReleaseStatus":
-          this.activeStatus = 6;
           break;
       }
     },
