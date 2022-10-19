@@ -1,22 +1,18 @@
 <template>
   <section>
-    <h2 class="sub-title">책 검색</h2>
+    <h2 class="sub-title">주문 상세 보기 및 내역서 회신</h2>
     <section class="sub-container">
-      <!-- 책 검색 -->
-      <SearchBasicGroup />
-      <!-- //책 검색 -->
-
-      <!-- 책 리스트 -->
-      <BookList />
-      <!-- //책 리스트 -->
+      <article class="order-info d-flex justify-space-between">
+        <div>출판사명: <strong>민음사</strong></div>
+        <div>2022.10.4</div>
+      </article>
+      <DeliverList />
     </section>
   </section>
 </template>
-
 <script>
-import BookList from "@/components/search/BookList";
-import SearchBasicGroup from "@/components/form/SearchBasicGroup";
+import DeliverList from "@/components/deliver/DeliverList";
 export default {
-  components: { SearchBasicGroup, BookList },
+  components: { DeliverList },
 };
 </script>
