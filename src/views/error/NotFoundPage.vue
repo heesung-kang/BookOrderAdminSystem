@@ -12,7 +12,7 @@
 export default {
   methods: {
     home() {
-      this.$router.push("/SearchOrder");
+      this.$router.push("/OrderList");
     },
   },
 };
