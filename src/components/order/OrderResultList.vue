@@ -2,10 +2,7 @@
   <section>
     <!-- 발주 내역 -->
     <section class="header d-flex" v-if="!mobile">
-      <div class="d-flex dual">
-        <div>발주</div>
-        <div>품목정보</div>
-      </div>
+      <div>품목정보</div>
       <div>ISBN</div>
       <div class="d-flex">
         <div>정가</div>
@@ -13,11 +10,11 @@
       </div>
       <div>공급가</div>
       <div>수량</div>
+      <div>회신</div>
     </section>
     <ul class="body">
       <li class="d-flex align-center">
         <div class="d-flex align-center info-wrap">
-          <div class="ck-box"><v-checkbox v-model="selected" value="9788937427220"></v-checkbox></div>
           <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
           <div class="book-info">
             <h3>아노말리(양장본 Hardcover)</h3>
@@ -31,22 +28,21 @@
         </div>
         <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
         <div class="count"><span v-if="mobile">수량</span> 품절</div>
+        <!-- 버튼종류 : 정상, 품절, 절판, 재고부족 -->
+        <div class="btn-wrap"><button class="inTable">재고부족</button></div>
       </li>
     </ul>
     <!-- //발주 내역 -->
-    <!-- 메모 -->
-    <section class="memo">
-      <h4>메모</h4>
-      <div>아노말리(9788937427220)는 일시 품절이나 3일 후 입고 예정입니다.</div>
-    </section>
-    <!-- //메모 -->
     <!-- 총 합계 --->
     <section class="total-wrap mt24">
       <div>
         <span class="total-prod">총 6권</span>
         <span class="total">합계 72,000원</span>
       </div>
-      <button class="primary" @click="showModal">발주</button>
+      <div class="d-flex">
+        <button class="basic mr5">임시저장</button>
+        <button class="primary" @click="showModal">회신</button>
+      </div>
     </section>
     <!-- //총 합계 --->
   </section>
@@ -55,7 +51,8 @@
 <script>
 import { mapGetters } from "vuex";
 import { getPopupOpt } from "@/utils/modal";
-import orderModal from "@/components/modal/ModalOrder.vue";
+import ModalMemo from "@/components/modal/ModalMemo.vue";
+import { mobileBreakPoint } from "@/utils/mobileBreakPoint";
 export default {
   data() {
     return {
@@ -68,17 +65,17 @@ export default {
   },
   watch: {
     windowWidth(size) {
-      size > 600 ? (this.mobile = false) : (this.mobile = true);
+      size > mobileBreakPoint ? (this.mobile = false) : (this.mobile = true);
     },
   },
   mounted() {
-    this.windowWidth > 600 ? (this.mobile = false) : (this.mobile = true);
+    this.windowWidth > mobileBreakPoint ? (this.mobile = false) : (this.mobile = true);
   },
   methods: {
     showModal() {
       this.mobile
-        ? this.$modal.show(orderModal, {}, getPopupOpt("orderModal", "95%", "auto", false))
-        : this.$modal.show(orderModal, {}, getPopupOpt("orderModal", "500px", "auto", false));
+        ? this.$modal.show(ModalMemo, {}, getPopupOpt("ModalMemo", "95%", "auto", false))
+        : this.$modal.show(ModalMemo, {}, getPopupOpt("ModalMemo", "500px", "auto", false));
     },
   },
 };
@@ -128,20 +125,18 @@ export default {
         }
       }
     }
+    .btn-wrap {
+      display: flex;
+      justify-content: center;
+    }
   }
-}
-.memo {
-  margin-top: 5px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 10px;
 }
 .total-wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: #fff;
-  max-width: 451px;
+  max-width: 550px;
   margin: 0 auto;
   border: 1px solid #000;
   padding: 15px 42px;
@@ -152,13 +147,10 @@ export default {
   .total {
     @include NotoSans(1.6, 700, #000);
   }
-  button {
-    @include NotoSans(1.4, 700, #fff);
-  }
 }
 .size {
   &:nth-child(1) {
-    width: calc(100% - 420px);
+    width: calc(100% - 520px);
   }
   &:nth-child(2) {
     width: 120px;
@@ -179,6 +171,9 @@ export default {
   }
   &:nth-child(5) {
     width: 60px;
+  }
+  &:nth-child(6) {
+    width: 100px;
   }
 }
 @include mobile {
@@ -201,10 +196,10 @@ export default {
         }
       }
       .isbn {
-        margin-left: 80px;
+        margin-left: 56px;
       }
       .price-info {
-        margin-left: 83px;
+        margin-left: 60px;
         .normal-price {
           margin-right: 20px;
         }
@@ -214,14 +209,17 @@ export default {
         }
       }
       .final-price {
-        margin: 10px 0 0 83px;
+        margin: 10px 0 0 60px;
         text-align: left;
         white-space: nowrap;
       }
       .count {
-        margin-left: 83px;
+        margin-left: 60px;
         text-align: left;
         white-space: nowrap;
+      }
+      .btn-wrap {
+        margin: 10px 0 0 50px;
       }
     }
   }
@@ -235,9 +233,6 @@ export default {
     }
     .total {
       @include NotoSans(1.6, 700, #000);
-    }
-    button {
-      @include NotoSans(1.6, 700, #fff);
     }
   }
 }

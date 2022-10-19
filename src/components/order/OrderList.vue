@@ -7,8 +7,7 @@
       <tr>
         <th>출판사</th>
         <th>종수</th>
-        <th>{{ subject1 }}</th>
-        <th>{{ subject2 }}</th>
+        <th>주문일시</th>
       </tr>
     </thead>
     <tbody>
@@ -16,18 +15,15 @@
         <td>북스피어</td>
         <td>5</td>
         <td>2022.10.04 09:41:23</td>
-        <td>2022.10.04 09:41:23</td>
       </tr>
       <tr>
         <td>북스피어</td>
         <td>5</td>
         <td>2022.10.04 09:41:23</td>
-        <td>2022.10.04 09:41:23</td>
       </tr>
       <tr>
         <td>북스피어</td>
         <td>5</td>
-        <td>2022.10.04 09:41:23</td>
         <td>2022.10.04 09:41:23</td>
       </tr>
     </tbody>
@@ -42,7 +38,6 @@
 <script>
 export default {
   name: "OrderList",
-  props: ["subject1", "subject2"],
   data() {
     return {
       list: ["test"],
