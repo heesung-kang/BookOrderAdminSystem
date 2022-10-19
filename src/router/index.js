@@ -19,66 +19,6 @@ const router = new VueRouter({
       component: () => import("@/views/login/Login.vue"),
       meta: { unauthorized: true },
     },
-    {
-      path: "/SearchOrder",
-      name: "SearchOrder",
-      components: {
-        lnb,
-        footer,
-        contents: () => import("@/views/order/SearchOrder.vue"),
-      },
-      meta: { unauthorized: true },
-    },
-    {
-      path: "/Cart",
-      name: "Cart",
-      components: {
-        lnb,
-        footer,
-        contents: () => import("@/views/cart/Cart.vue"),
-      },
-      meta: { unauthorized: true },
-    },
-    {
-      path: "/OrderList",
-      name: "OrderList",
-      components: {
-        lnb,
-        footer,
-        contents: () => import("@/views/order/OrderList.vue"),
-      },
-      meta: { unauthorized: true },
-    },
-    {
-      path: "/OrderResult",
-      name: "OrderResult",
-      components: {
-        lnb,
-        footer,
-        contents: () => import("@/views/order/OrderResult.vue"),
-      },
-      meta: { unauthorized: true },
-    },
-    {
-      path: "/ReleaseList",
-      name: "ReleaseList",
-      components: {
-        lnb,
-        footer,
-        contents: () => import("@/views/release/ReleaseList.vue"),
-      },
-      meta: { unauthorized: true },
-    },
-    {
-      path: "/ReleaseStatus",
-      name: "ReleaseStatus",
-      components: {
-        lnb,
-        footer,
-        contents: () => import("@/views/release/ReleaseStatus.vue"),
-      },
-      meta: { unauthorized: true },
-    },
     //404
     {
       path: "*",
