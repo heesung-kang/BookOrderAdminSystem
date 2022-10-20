@@ -52,24 +52,14 @@
 import { mapGetters } from "vuex";
 import { getPopupOpt } from "@/utils/modal";
 import ModalMemo from "@/components/modal/ModalMemo.vue";
-import { mobileBreakPoint } from "@/utils/mobileBreakPoint";
 export default {
   data() {
     return {
       selected: [],
-      mobile: false,
     };
   },
   computed: {
-    ...mapGetters("common", ["windowWidth"]),
-  },
-  watch: {
-    windowWidth(size) {
-      size > mobileBreakPoint ? (this.mobile = false) : (this.mobile = true);
-    },
-  },
-  mounted() {
-    this.windowWidth > mobileBreakPoint ? (this.mobile = false) : (this.mobile = true);
+    ...mapGetters("common", ["windowWidth", "mobile"]),
   },
   methods: {
     showModal() {

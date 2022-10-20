@@ -51,27 +51,17 @@
 import { mapGetters } from "vuex";
 import { getPopupOpt } from "@/utils/modal";
 import ModalMemo from "@/components/modal/ModalMemo.vue";
-import { mobileBreakPoint } from "@/utils/mobileBreakPoint";
 import Selects from "@/components/form/Selects";
 export default {
   components: { Selects },
   data() {
     return {
       selected: [],
-      mobile: false,
       itemList: [{ item: "배본사", value: "01" }],
     };
   },
   computed: {
-    ...mapGetters("common", ["windowWidth"]),
-  },
-  watch: {
-    windowWidth(size) {
-      size > mobileBreakPoint ? (this.mobile = false) : (this.mobile = true);
-    },
-  },
-  mounted() {
-    this.windowWidth > mobileBreakPoint ? (this.mobile = false) : (this.mobile = true);
+    ...mapGetters("common", ["windowWidth", "mobile"]),
   },
   methods: {
     showModal() {
