@@ -21,5 +21,6 @@ export default {
 <style lang="scss" scoped>
 .order-info {
   margin-bottom: 20px;
+  font-size: 1.6rem;
 }
 </style>
