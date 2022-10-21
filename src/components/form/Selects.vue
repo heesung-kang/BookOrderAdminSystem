@@ -68,6 +68,7 @@ export default {
 @include mobile {
   .selects::v-deep {
     max-width: 100px;
+    min-width: 110px;
   }
 }
 </style>

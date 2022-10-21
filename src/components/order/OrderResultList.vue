@@ -76,6 +76,7 @@ export default {
   padding: 5px 13px;
   & > div {
     text-align: center;
+    @include NotoSans(1.6, 500, #000);
     @extend .size;
   }
   .dual {
@@ -96,22 +97,29 @@ export default {
     background-color: #fff;
     border: 1px solid #000;
     padding: 5px 13px;
+    .final-price {
+      @include NotoSans(1.6, 500, #000);
+    }
     & > div {
       text-align: center;
       @extend .size;
       .thumbnail {
-        width: 40px;
-        min-width: 40px;
+        width: 60px;
+        min-width: 60px;
         img {
           width: 100%;
-          height: 50px;
+          height: 75px;
           border: 1px solid #ccc;
         }
       }
       .book-info {
         margin-left: 18px;
+        h3 {
+          @include NotoSans(1.6, 500, #000);
+        }
         .author {
           text-align: left;
+          @include NotoSans(1.4, 400, #000);
         }
       }
     }
@@ -178,6 +186,15 @@ export default {
       .info-wrap {
         width: 100% !important;
         align-items: flex-start !important;
+        .thumbnail {
+          width: 50px;
+          min-width: 50px;
+          img {
+            width: 100%;
+            height: 52px;
+            border: 1px solid #ccc;
+          }
+        }
         .book-info {
           width: 100%;
           h3 {
@@ -186,10 +203,10 @@ export default {
         }
       }
       .isbn {
-        margin-left: 56px;
+        margin-left: 66px;
       }
       .price-info {
-        margin-left: 60px;
+        margin-left: 70px;
         .normal-price {
           margin-right: 20px;
         }
@@ -199,17 +216,17 @@ export default {
         }
       }
       .final-price {
-        margin: 10px 0 0 60px;
+        margin: 10px 0 0 70px;
         text-align: left;
         white-space: nowrap;
       }
       .count {
-        margin-left: 60px;
+        margin-left: 70px;
         text-align: left;
         white-space: nowrap;
       }
       .btn-wrap {
-        margin: 10px 0 0 50px;
+        margin: 10px 0 0 60px;
       }
     }
   }

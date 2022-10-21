@@ -16,3 +16,9 @@ export default {
   components: { DeliverList },
 };
 </script>
+<style lang="scss" scoped>
+.order-info {
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+}
+</style>
