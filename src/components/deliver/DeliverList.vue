@@ -26,6 +26,141 @@
         </div>
         <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
       </li>
+      <li class="d-flex align-center">
+        <div class="d-flex align-center info-wrap">
+          <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
+          <div class="book-info">
+            <h3>아노말리(양장본 Hardcover)</h3>
+            <div class="author">에르베 르 텔리에</div>
+          </div>
+        </div>
+        <div class="isbn">9788937427220</div>
+        <div class="d-flex price-info">
+          <div class="normal-price"><span v-if="mobile">정가</span> 20,000</div>
+          <div><span v-if="mobile">공급률</span> 60%</div>
+        </div>
+        <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
+      </li>
+      <li class="d-flex align-center">
+        <div class="d-flex align-center info-wrap">
+          <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
+          <div class="book-info">
+            <h3>아노말리(양장본 Hardcover)</h3>
+            <div class="author">에르베 르 텔리에</div>
+          </div>
+        </div>
+        <div class="isbn">9788937427220</div>
+        <div class="d-flex price-info">
+          <div class="normal-price"><span v-if="mobile">정가</span> 20,000</div>
+          <div><span v-if="mobile">공급률</span> 60%</div>
+        </div>
+        <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
+      </li>
+      <li class="d-flex align-center">
+        <div class="d-flex align-center info-wrap">
+          <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
+          <div class="book-info">
+            <h3>아노말리(양장본 Hardcover)</h3>
+            <div class="author">에르베 르 텔리에</div>
+          </div>
+        </div>
+        <div class="isbn">9788937427220</div>
+        <div class="d-flex price-info">
+          <div class="normal-price"><span v-if="mobile">정가</span> 20,000</div>
+          <div><span v-if="mobile">공급률</span> 60%</div>
+        </div>
+        <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
+      </li>
+      <li class="d-flex align-center">
+        <div class="d-flex align-center info-wrap">
+          <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
+          <div class="book-info">
+            <h3>아노말리(양장본 Hardcover)</h3>
+            <div class="author">에르베 르 텔리에</div>
+          </div>
+        </div>
+        <div class="isbn">9788937427220</div>
+        <div class="d-flex price-info">
+          <div class="normal-price"><span v-if="mobile">정가</span> 20,000</div>
+          <div><span v-if="mobile">공급률</span> 60%</div>
+        </div>
+        <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
+      </li>
+      <li class="d-flex align-center">
+        <div class="d-flex align-center info-wrap">
+          <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
+          <div class="book-info">
+            <h3>아노말리(양장본 Hardcover)</h3>
+            <div class="author">에르베 르 텔리에</div>
+          </div>
+        </div>
+        <div class="isbn">9788937427220</div>
+        <div class="d-flex price-info">
+          <div class="normal-price"><span v-if="mobile">정가</span> 20,000</div>
+          <div><span v-if="mobile">공급률</span> 60%</div>
+        </div>
+        <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
+      </li>
+      <li class="d-flex align-center">
+        <div class="d-flex align-center info-wrap">
+          <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
+          <div class="book-info">
+            <h3>아노말리(양장본 Hardcover)</h3>
+            <div class="author">에르베 르 텔리에</div>
+          </div>
+        </div>
+        <div class="isbn">9788937427220</div>
+        <div class="d-flex price-info">
+          <div class="normal-price"><span v-if="mobile">정가</span> 20,000</div>
+          <div><span v-if="mobile">공급률</span> 60%</div>
+        </div>
+        <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
+      </li>
+      <li class="d-flex align-center">
+        <div class="d-flex align-center info-wrap">
+          <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
+          <div class="book-info">
+            <h3>아노말리(양장본 Hardcover)</h3>
+            <div class="author">에르베 르 텔리에</div>
+          </div>
+        </div>
+        <div class="isbn">9788937427220</div>
+        <div class="d-flex price-info">
+          <div class="normal-price"><span v-if="mobile">정가</span> 20,000</div>
+          <div><span v-if="mobile">공급률</span> 60%</div>
+        </div>
+        <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
+      </li>
+      <li class="d-flex align-center">
+        <div class="d-flex align-center info-wrap">
+          <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
+          <div class="book-info">
+            <h3>아노말리(양장본 Hardcover)</h3>
+            <div class="author">에르베 르 텔리에</div>
+          </div>
+        </div>
+        <div class="isbn">9788937427220</div>
+        <div class="d-flex price-info">
+          <div class="normal-price"><span v-if="mobile">정가</span> 20,000</div>
+          <div><span v-if="mobile">공급률</span> 60%</div>
+        </div>
+        <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
+      </li>
+      <li class="d-flex align-center">
+        <div class="d-flex align-center info-wrap">
+          <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
+          <div class="book-info">
+            <h3>아노말리(양장본 Hardcover)</h3>
+            <div class="author">에르베 르 텔리에</div>
+          </div>
+        </div>
+        <div class="isbn">9788937427220</div>
+        <div class="d-flex price-info">
+          <div class="normal-price"><span v-if="mobile">정가</span> 20,000</div>
+          <div><span v-if="mobile">공급률</span> 60%</div>
+        </div>
+        <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
+      </li>
     </ul>
     <!-- //발주 내역 -->
     <!-- 총 합계 --->
@@ -99,8 +234,9 @@ export default {
     background-color: #fff;
     border: 1px solid #000;
     padding: 5px 13px;
+    margin-bottom: 6px;
     .final-price {
-      @include NotoSans(1.6, 500, #000);
+      @include NotoSans(1.4, 700, #000);
     }
     & > div {
       text-align: center;
