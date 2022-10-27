@@ -4,10 +4,10 @@
     <section class="sub-container">
       <h3>서점 주문 리스트</h3>
       <section class="mt10">
-        <SearchDateRangeGroup :itemList="itemList" />
+        <SearchDateRangeGroup :itemList="itemList" @search="search" />
       </section>
       <section class="mt30">
-        <OrderList />
+        <OrderList :searchObj="searchObj" />
       </section>
     </section>
   </section>
@@ -20,13 +20,14 @@ export default {
   components: { SearchDateRangeGroup, OrderList },
   data() {
     return {
-      itemList: [
-        { item: "책 제목", value: "01" },
-        { item: "ISBN", value: "02" },
-        { item: "저자", value: "03" },
-        { item: "출판사", value: "04" },
-      ],
+      itemList: [{ item: "서점", value: "shop" }],
+      searchObj: {},
     };
+  },
+  methods: {
+    search(payload) {
+      this.searchObj = payload;
+    },
   },
 };
 </script>

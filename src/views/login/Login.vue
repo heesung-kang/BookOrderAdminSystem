@@ -21,6 +21,8 @@
 <script>
 import { saveCookie } from "@/utils/cookie";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/utils/db";
 import { app } from "@/utils/db";
 const auth = getAuth(app);
 export default {
@@ -44,7 +46,8 @@ export default {
             if (Number(userName[1]) === 3) {
               alert("출판사회원으로 가입해주세요.");
             } else {
-              saveCookie("userInfo", { uid: user.uid, name: userName[0], email: user.email, type: Number(userName[1]) });
+              const docSnap = await getDoc(doc(db, "publisherInfo", user.uid));
+              saveCookie("userInfo", { uid: user.uid, name: userName[0], email: user.email, type: Number(userName[1]), info: docSnap.data() });
               saveCookie("accessToken", user.accessToken);
               this.$router.push("/");
             }
