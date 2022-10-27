@@ -1,6 +1,7 @@
 <template>
   <section>
-    <table class="basic">
+    <TableSkeleton v-if="skeletonLoading" />
+    <table class="basic" v-else>
       <caption>
         서점별 주문리스트
       </caption>
@@ -14,7 +15,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in result" :key="index">
+        <tr
+          v-for="(item, index) in result"
+          :key="index"
+          @click="statement({ id: item.sid, date: item.timestamp, orderTimeId: item.order_time_id, shopName: item.shop_name, uid: item.uid })"
+        >
           <td>{{ item.shop_name }}</td>
           <td>{{ item.count }}</td>
           <td>{{ item.shop_order_status === 0 ? "회신 전" : item.shop_order_status === 1 ? "회신" : "발주" }}</td>
@@ -40,6 +45,7 @@ import arrMerge from "@/utils/arrMerge";
 import TableSkeleton from "@/skeletons/TableSkeleton";
 export default {
   name: "OrderList",
+  components: { TableSkeleton },
   props: ["searchObj"],
   data() {
     return {
@@ -48,6 +54,9 @@ export default {
       result: [],
       searchResult: [],
     };
+  },
+  computed: {
+    ...mapGetters("common", ["skeletonLoading"]),
   },
   watch: {
     searchObj() {
@@ -102,8 +111,15 @@ export default {
         }
       });
     },
+    statement(data) {
+      this.$router.push(`/OrderListDetail/${data.id}/${data.date}/${data.orderTimeId}/${data.shopName}/${data.uid}`);
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+td {
+  cursor: pointer;
+}
+</style>

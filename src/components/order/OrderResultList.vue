@@ -9,189 +9,30 @@
         <div>공급률</div>
       </div>
       <div>공급가</div>
-      <div>수량</div>
+      <div>주문</div>
+      <div>공급</div>
       <div>회신</div>
     </section>
     <ul class="body">
-      <li class="d-flex align-center">
+      <li class="d-flex align-center" v-for="(book, index) in books" :key="index">
         <div class="d-flex align-center info-wrap">
-          <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
           <div class="book-info">
-            <h3>아노말리(양장본 Hardcover)</h3>
-            <div class="author">에르베 르 텔리에</div>
+            <h3>{{ book.data.subject }}</h3>
+            <div class="author">{{ book.data.author }}</div>
           </div>
         </div>
-        <div class="isbn">9788937427220</div>
+        <div class="isbn">{{ book.data.isbn }}</div>
         <div class="d-flex price-info">
-          <div class="normal-price"><span v-if="mobile">정가</span> 20,000</div>
-          <div><span v-if="mobile">공급률</span> 60%</div>
+          <div class="normal-price"><span v-if="mobile">정가</span> {{ book.data.price?.toLocaleString() }}</div>
+          <div><span v-if="mobile">공급률</span> {{ book.data.supply_rate }}%</div>
         </div>
-        <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
-        <div class="count"><span v-if="mobile">수량</span> 품절</div>
+        <div class="final-price"><span v-if="mobile">공급가</span> {{ ((book.data.price * book.data.supply_rate) / 100).toLocaleString() }}</div>
+        <div class="count"><span v-if="mobile">주문</span> {{ book.data.count }}</div>
+        <div class="count"><span v-if="mobile">공급</span> <input type="number" class="basic" v-model="book.data.reply_count" /></div>
         <!-- 버튼종류 : 정상, 품절, 절판, 재고부족 -->
-        <div class="btn-wrap"><button class="inTable">재고부족</button></div>
-      </li>
-      <li class="d-flex align-center">
-        <div class="d-flex align-center info-wrap">
-          <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
-          <div class="book-info">
-            <h3>아노말리(양장본 Hardcover)</h3>
-            <div class="author">에르베 르 텔리에</div>
-          </div>
+        <div class="btn-wrap">
+          <SelectsReply @select="changeStatus" :index="index" :dafaultValue="book.data.publisher_reply_status" />
         </div>
-        <div class="isbn">9788937427220</div>
-        <div class="d-flex price-info">
-          <div class="normal-price"><span v-if="mobile">정가</span> 20,000</div>
-          <div><span v-if="mobile">공급률</span> 60%</div>
-        </div>
-        <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
-        <div class="count"><span v-if="mobile">수량</span> 품절</div>
-        <!-- 버튼종류 : 정상, 품절, 절판, 재고부족 -->
-        <div class="btn-wrap"><button class="inTable">재고부족</button></div>
-      </li>
-      <li class="d-flex align-center">
-        <div class="d-flex align-center info-wrap">
-          <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
-          <div class="book-info">
-            <h3>아노말리(양장본 Hardcover)</h3>
-            <div class="author">에르베 르 텔리에</div>
-          </div>
-        </div>
-        <div class="isbn">9788937427220</div>
-        <div class="d-flex price-info">
-          <div class="normal-price"><span v-if="mobile">정가</span> 20,000</div>
-          <div><span v-if="mobile">공급률</span> 60%</div>
-        </div>
-        <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
-        <div class="count"><span v-if="mobile">수량</span> 품절</div>
-        <!-- 버튼종류 : 정상, 품절, 절판, 재고부족 -->
-        <div class="btn-wrap"><button class="inTable">재고부족</button></div>
-      </li>
-      <li class="d-flex align-center">
-        <div class="d-flex align-center info-wrap">
-          <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
-          <div class="book-info">
-            <h3>아노말리(양장본 Hardcover)</h3>
-            <div class="author">에르베 르 텔리에</div>
-          </div>
-        </div>
-        <div class="isbn">9788937427220</div>
-        <div class="d-flex price-info">
-          <div class="normal-price"><span v-if="mobile">정가</span> 20,000</div>
-          <div><span v-if="mobile">공급률</span> 60%</div>
-        </div>
-        <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
-        <div class="count"><span v-if="mobile">수량</span> 품절</div>
-        <!-- 버튼종류 : 정상, 품절, 절판, 재고부족 -->
-        <div class="btn-wrap"><button class="inTable">재고부족</button></div>
-      </li>
-      <li class="d-flex align-center">
-        <div class="d-flex align-center info-wrap">
-          <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
-          <div class="book-info">
-            <h3>아노말리(양장본 Hardcover)</h3>
-            <div class="author">에르베 르 텔리에</div>
-          </div>
-        </div>
-        <div class="isbn">9788937427220</div>
-        <div class="d-flex price-info">
-          <div class="normal-price"><span v-if="mobile">정가</span> 20,000</div>
-          <div><span v-if="mobile">공급률</span> 60%</div>
-        </div>
-        <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
-        <div class="count"><span v-if="mobile">수량</span> 품절</div>
-        <!-- 버튼종류 : 정상, 품절, 절판, 재고부족 -->
-        <div class="btn-wrap"><button class="inTable">재고부족</button></div>
-      </li>
-      <li class="d-flex align-center">
-        <div class="d-flex align-center info-wrap">
-          <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
-          <div class="book-info">
-            <h3>아노말리(양장본 Hardcover)</h3>
-            <div class="author">에르베 르 텔리에</div>
-          </div>
-        </div>
-        <div class="isbn">9788937427220</div>
-        <div class="d-flex price-info">
-          <div class="normal-price"><span v-if="mobile">정가</span> 20,000</div>
-          <div><span v-if="mobile">공급률</span> 60%</div>
-        </div>
-        <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
-        <div class="count"><span v-if="mobile">수량</span> 품절</div>
-        <!-- 버튼종류 : 정상, 품절, 절판, 재고부족 -->
-        <div class="btn-wrap"><button class="inTable">재고부족</button></div>
-      </li>
-      <li class="d-flex align-center">
-        <div class="d-flex align-center info-wrap">
-          <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
-          <div class="book-info">
-            <h3>아노말리(양장본 Hardcover)</h3>
-            <div class="author">에르베 르 텔리에</div>
-          </div>
-        </div>
-        <div class="isbn">9788937427220</div>
-        <div class="d-flex price-info">
-          <div class="normal-price"><span v-if="mobile">정가</span> 20,000</div>
-          <div><span v-if="mobile">공급률</span> 60%</div>
-        </div>
-        <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
-        <div class="count"><span v-if="mobile">수량</span> 품절</div>
-        <!-- 버튼종류 : 정상, 품절, 절판, 재고부족 -->
-        <div class="btn-wrap"><button class="inTable">재고부족</button></div>
-      </li>
-      <li class="d-flex align-center">
-        <div class="d-flex align-center info-wrap">
-          <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
-          <div class="book-info">
-            <h3>아노말리(양장본 Hardcover)</h3>
-            <div class="author">에르베 르 텔리에</div>
-          </div>
-        </div>
-        <div class="isbn">9788937427220</div>
-        <div class="d-flex price-info">
-          <div class="normal-price"><span v-if="mobile">정가</span> 20,000</div>
-          <div><span v-if="mobile">공급률</span> 60%</div>
-        </div>
-        <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
-        <div class="count"><span v-if="mobile">수량</span> 품절</div>
-        <!-- 버튼종류 : 정상, 품절, 절판, 재고부족 -->
-        <div class="btn-wrap"><button class="inTable">재고부족</button></div>
-      </li>
-      <li class="d-flex align-center">
-        <div class="d-flex align-center info-wrap">
-          <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
-          <div class="book-info">
-            <h3>아노말리(양장본 Hardcover)</h3>
-            <div class="author">에르베 르 텔리에</div>
-          </div>
-        </div>
-        <div class="isbn">9788937427220</div>
-        <div class="d-flex price-info">
-          <div class="normal-price"><span v-if="mobile">정가</span> 20,000</div>
-          <div><span v-if="mobile">공급률</span> 60%</div>
-        </div>
-        <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
-        <div class="count"><span v-if="mobile">수량</span> 품절</div>
-        <!-- 버튼종류 : 정상, 품절, 절판, 재고부족 -->
-        <div class="btn-wrap"><button class="inTable">재고부족</button></div>
-      </li>
-      <li class="d-flex align-center">
-        <div class="d-flex align-center info-wrap">
-          <div class="thumbnail"><img src="@/assets/images/book.jpg" alt="" /></div>
-          <div class="book-info">
-            <h3>아노말리(양장본 Hardcover)</h3>
-            <div class="author">에르베 르 텔리에</div>
-          </div>
-        </div>
-        <div class="isbn">9788937427220</div>
-        <div class="d-flex price-info">
-          <div class="normal-price"><span v-if="mobile">정가</span> 20,000</div>
-          <div><span v-if="mobile">공급률</span> 60%</div>
-        </div>
-        <div class="final-price"><span v-if="mobile">공급가</span> 12,000</div>
-        <div class="count"><span v-if="mobile">수량</span> 품절</div>
-        <!-- 버튼종류 : 정상, 품절, 절판, 재고부족 -->
-        <div class="btn-wrap"><button class="inTable">재고부족</button></div>
       </li>
     </ul>
     <!-- //발주 내역 -->
@@ -202,7 +43,6 @@
         <span class="total">합계 72,000원</span>
       </div>
       <div class="d-flex">
-        <button class="basic mr5">임시저장</button>
         <button class="primary" @click="showModal">회신</button>
       </div>
     </section>
@@ -214,20 +54,49 @@
 import { mapGetters } from "vuex";
 import { getPopupOpt } from "@/utils/modal";
 import ModalMemo from "@/components/modal/ModalMemo.vue";
+import SelectsReply from "@/components/form/SelectsReply";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "@/utils/db";
+import BookListSkeleton from "@/skeletons/BookListSkeleton";
+import BookListMobileSkeleton from "@/skeletons/BookListMobileSkeleton";
 export default {
+  components: { SelectsReply },
+  props: ["id", "orderTimeId", "uid"],
   data() {
     return {
       selected: [],
+      books: [],
     };
   },
   computed: {
     ...mapGetters("common", ["windowWidth", "mobile"]),
+  },
+  async created() {
+    try {
+      this.$store.commit("common/setSkeleton", true);
+      const first = query(
+        collection(db, "orderRequest"),
+        where("uid", "==", this.uid),
+        where("sid", "==", Number(this.id)),
+        where("order_time_id", "==", this.orderTimeId),
+      );
+      const documentSnapshots = await getDocs(first);
+      await documentSnapshots.forEach(doc => {
+        this.books.push({ id: doc.id, data: doc.data() });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    this.$store.commit("common/setSkeleton", false);
   },
   methods: {
     showModal() {
       this.mobile
         ? this.$modal.show(ModalMemo, {}, getPopupOpt("ModalMemo", "95%", "auto", false))
         : this.$modal.show(ModalMemo, {}, getPopupOpt("ModalMemo", "500px", "auto", false));
+    },
+    changeStatus(payload) {
+      this.books[payload.index].data.publisher_reply_status = payload.value;
     },
   },
 };
@@ -257,7 +126,6 @@ export default {
 .body {
   li {
     background-color: #fff;
-    border: 1px solid #000;
     padding: 5px 13px;
     margin-bottom: 6px;
     .final-price {
@@ -266,17 +134,7 @@ export default {
     & > div {
       text-align: center;
       @extend .size;
-      .thumbnail {
-        width: 60px;
-        min-width: 60px;
-        img {
-          width: 100%;
-          height: 75px;
-          border: 1px solid #ccc;
-        }
-      }
       .book-info {
-        margin-left: 18px;
         h3 {
           @include NotoSans(1.6, 500, #000);
         }
@@ -311,7 +169,7 @@ export default {
 }
 .size {
   &:nth-child(1) {
-    width: calc(100% - 520px);
+    width: calc(100% - 460px);
   }
   &:nth-child(2) {
     width: 120px;
@@ -333,6 +191,9 @@ export default {
   &:nth-child(5) {
     width: 60px;
   }
+  &:nth-child(5) {
+    width: 60px;
+  }
   &:nth-child(6) {
     width: 100px;
   }
@@ -349,15 +210,6 @@ export default {
       .info-wrap {
         width: 100% !important;
         align-items: flex-start !important;
-        .thumbnail {
-          width: 50px;
-          min-width: 50px;
-          img {
-            width: 100%;
-            height: 52px;
-            border: 1px solid #ccc;
-          }
-        }
         .book-info {
           width: 100%;
           h3 {
@@ -365,11 +217,7 @@ export default {
           }
         }
       }
-      .isbn {
-        margin-left: 66px;
-      }
       .price-info {
-        margin-left: 70px;
         .normal-price {
           margin-right: 20px;
         }
@@ -379,17 +227,17 @@ export default {
         }
       }
       .final-price {
-        margin: 10px 0 0 70px;
+        margin: 10px 0 0 0;
         text-align: left;
         white-space: nowrap;
       }
       .count {
-        margin-left: 70px;
         text-align: left;
         white-space: nowrap;
       }
       .btn-wrap {
-        margin: 10px 0 0 60px;
+        justify-content: flex-start;
+        margin: 10px 0 0 0;
       }
     }
   }
