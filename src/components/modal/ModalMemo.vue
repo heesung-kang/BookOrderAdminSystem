@@ -41,7 +41,7 @@ export default {
           const docRef = doc(db, "orderRequest", ele.id);
           batch.update(docRef, {
             publisher_reply_status: ele.data.publisher_reply_status,
-            reply_count: ele.data.reply_count,
+            reply_count: parseInt(ele.data.reply_count),
             shop_order_status: 1,
             reply_time: timestamp,
             reply_time_id: this.$date().format("YYYYMMDDHHmmss"),

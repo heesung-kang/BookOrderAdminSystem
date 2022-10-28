@@ -22,7 +22,9 @@
         >
           <td>{{ item.shop_name }}</td>
           <td>{{ item.count }}</td>
-          <td>{{ item.shop_order_status === 0 ? "회신 전" : item.shop_order_status === 1 ? "회신" : "발주" }}</td>
+          <td>
+            {{ item.shop_order_status === 0 ? "회신 전" : item.shop_order_status === 1 ? "회신" : item.shop_order_status === 2 ? "발주" : "출고" }}
+          </td>
           <td>{{ item.timestamp }}</td>
           <td>{{ item.replytimestamp }}</td>
         </tr>
@@ -38,7 +40,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import { db } from "@/utils/db";
 import { getCookie } from "@/utils/cookie";
 import arrMerge from "@/utils/arrMerge";
@@ -69,7 +71,7 @@ export default {
       const {
         info: { sid },
       } = getCookie("userInfo");
-      const first = query(collection(db, "orderRequest"), where("sid", "==", sid));
+      const first = query(collection(db, "orderRequest"), where("sid", "==", sid), orderBy("order_time_id", "desc"));
       const documentSnapshots = await getDocs(first);
       documentSnapshots.forEach(doc => {
         const temp = doc.data();
