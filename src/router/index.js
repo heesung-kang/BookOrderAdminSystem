@@ -35,7 +35,7 @@ const router = new VueRouter({
       },
     },
     {
-      path: "/OrderListDetail",
+      path: "/OrderListDetail/:id/:date/:orderTimeId/:shopName/:uid",
       name: "OrderListDetail",
       components: {
         lnb,

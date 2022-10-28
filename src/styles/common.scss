@@ -72,6 +72,13 @@
   background-color:#fff;
 }
 /*form*/
+.disabled{
+  &:disabled{
+    background-color: #f4f4f4 !important;
+    border: 1px solid #ccc !important;
+    color: #aaaaaa !important;
+  }
+}
 input[type="text"]{
   &.basic {
     border: 1px solid #000;
@@ -81,6 +88,8 @@ input[type="text"]{
     font-size:1.4rem;
     background-color:#fff;
   }
+  @extend .disabled;
+
 }
 input[type="number"]{
   &.basic {
@@ -91,6 +100,7 @@ input[type="number"]{
     @include NotoSans(1.4, 500, #000);
     background-color:#fff;
   }
+  @extend .disabled;
 }
 /*button*/
 .button{
@@ -123,6 +133,11 @@ button{
     @extend .button;
     background-color:#000 !important;
     @include NotoSans(1.6,700,#fff);
+  }
+  &:disabled{
+    background-color: #f4f4f4 !important;
+    color: #aaaaaa !important;
+    font-weight: 400 !important;
   }
 }
 /*table*/

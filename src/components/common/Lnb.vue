@@ -6,8 +6,7 @@
       <nav class="lnb">
         <ul @click="close">
           <li :class="{ active: activeStatus === 1 }"><router-link to="/OrderList">주문 목록 보기</router-link></li>
-          <li :class="{ active: activeStatus === 2 }"><router-link to="/OrderListDetail">주문 상세 보기 및 내역서 회신</router-link></li>
-          <li :class="{ active: activeStatus === 3 }"><router-link to="/DeliveryOrder">결제 내역 보기 및 출고 지시</router-link></li>
+          <li :class="{ active: activeStatus === 2 }"><router-link to="/DeliveryOrder">결제 내역 보기 및 출고 지시</router-link></li>
         </ul>
       </nav>
     </aside>
@@ -51,10 +50,10 @@ export default {
           this.activeStatus = 1;
           break;
         case "OrderListDetail":
-          this.activeStatus = 2;
+          this.activeStatus = 1;
           break;
         case "DeliveryOrder":
-          this.activeStatus = 3;
+          this.activeStatus = 2;
           break;
       }
     },
