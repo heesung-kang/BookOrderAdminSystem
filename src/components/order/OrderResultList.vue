@@ -1,7 +1,9 @@
 <template>
   <section>
+    <BookListSkeleton v-if="!mobile && skeletonLoading" />
+    <BookListMobileSkeleton v-if="mobile && skeletonLoading" />
     <!-- 발주 내역 -->
-    <section class="header d-flex" v-if="!mobile">
+    <section class="header d-flex" v-if="!mobile && !skeletonLoading">
       <div>품목정보</div>
       <div>ISBN</div>
       <div class="d-flex">
@@ -28,22 +30,38 @@
         </div>
         <div class="final-price"><span v-if="mobile">공급가</span> {{ ((book.data.price * book.data.supply_rate) / 100).toLocaleString() }}</div>
         <div class="count"><span v-if="mobile">주문</span> {{ book.data.count }}</div>
-        <div class="count"><span v-if="mobile">공급</span> <input type="number" class="basic" v-model="book.data.reply_count" /></div>
+        <div class="count">
+          <span v-if="mobile">공급</span>
+          <input
+            type="number"
+            class="basic reply-count"
+            v-model="book.data.reply_count"
+            :disabled="book.data.publisher_reply_status !== 3"
+            v-if="book.data.shop_order_status === 0"
+          />
+          <span v-else>{{ book.data.reply_count }}</span>
+        </div>
         <!-- 버튼종류 : 정상, 품절, 절판, 재고부족 -->
         <div class="btn-wrap">
-          <SelectsReply @select="changeStatus" :index="index" :dafaultValue="book.data.publisher_reply_status" />
+          <SelectsReply
+            @select="changeStatus"
+            :index="index"
+            :dafaultValue="book.data.publisher_reply_status"
+            v-if="book.data.shop_order_status === 0"
+          />
+          <div v-else>{{ book.data.shop_order_status === 1 ? "회신" : "발주" }}</div>
         </div>
       </li>
     </ul>
     <!-- //발주 내역 -->
     <!-- 총 합계 --->
-    <section class="total-wrap mt24">
+    <section class="total-wrap mt24" v-if="!skeletonLoading">
       <div>
-        <span class="total-prod">총 6권</span>
-        <span class="total">합계 72,000원</span>
+        <span class="total-prod">총 {{ bookCount }}권</span>
+        <span class="total">합계 {{ totalPrice.toLocaleString() }}원</span>
       </div>
       <div class="d-flex">
-        <button class="primary" @click="showModal">회신</button>
+        <button class="primary" @click="showModal" :disabled="books[0].data.shop_order_status !== 0">회신</button>
       </div>
     </section>
     <!-- //총 합계 --->
@@ -60,7 +78,7 @@ import { db } from "@/utils/db";
 import BookListSkeleton from "@/skeletons/BookListSkeleton";
 import BookListMobileSkeleton from "@/skeletons/BookListMobileSkeleton";
 export default {
-  components: { SelectsReply },
+  components: { SelectsReply, BookListSkeleton, BookListMobileSkeleton },
   props: ["id", "orderTimeId", "uid"],
   data() {
     return {
@@ -69,34 +87,65 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("common", ["windowWidth", "mobile"]),
-  },
-  async created() {
-    try {
-      this.$store.commit("common/setSkeleton", true);
-      const first = query(
-        collection(db, "orderRequest"),
-        where("uid", "==", this.uid),
-        where("sid", "==", Number(this.id)),
-        where("order_time_id", "==", this.orderTimeId),
-      );
-      const documentSnapshots = await getDocs(first);
-      await documentSnapshots.forEach(doc => {
-        this.books.push({ id: doc.id, data: doc.data() });
+    ...mapGetters("common", ["windowWidth", "mobile", "skeletonLoading"]),
+    bookCount() {
+      //총 권수 계산
+      let count = 0;
+      this.books.forEach(ele => (count += Number(ele.data.count)));
+      return count;
+    },
+    totalPrice() {
+      //총 금액 계산
+      let price = 0;
+      this.books.forEach(ele => {
+        price += (ele.data.price * ele.data.supply_rate * ele.data.count) / 100;
       });
-    } catch (e) {
-      console.log(e);
-    }
-    this.$store.commit("common/setSkeleton", false);
+      return price;
+    },
+  },
+  created() {
+    this.load();
   },
   methods: {
+    async load() {
+      try {
+        this.books = [];
+        this.$store.commit("common/setSkeleton", true);
+        const first = query(
+          collection(db, "orderRequest"),
+          where("uid", "==", this.uid),
+          where("sid", "==", Number(this.id)),
+          where("order_time_id", "==", this.orderTimeId),
+        );
+        const documentSnapshots = await getDocs(first);
+        await documentSnapshots.forEach(doc => {
+          this.books.push({ id: doc.id, data: doc.data() });
+        });
+      } catch (e) {
+        console.log(e);
+      }
+      this.$store.commit("common/setSkeleton", false);
+    },
     showModal() {
       this.mobile
-        ? this.$modal.show(ModalMemo, {}, getPopupOpt("ModalMemo", "95%", "auto", false))
-        : this.$modal.show(ModalMemo, {}, getPopupOpt("ModalMemo", "500px", "auto", false));
+        ? this.$modal.show(ModalMemo, { books: this.books, update: this.load }, getPopupOpt("ModalMemo", "95%", "auto", false))
+        : this.$modal.show(ModalMemo, { books: this.books, update: this.load }, getPopupOpt("ModalMemo", "500px", "auto", false));
     },
+    //회신상태 변경
     changeStatus(payload) {
       this.books[payload.index].data.publisher_reply_status = payload.value;
+      //회신상태에 따라 공급수량 변경
+      switch (payload.value) {
+        case 0:
+          this.books[payload.index].data.reply_count = this.books[payload.index].data.count;
+          break;
+        case 1:
+          this.books[payload.index].data.reply_count = 0;
+          break;
+        case 2:
+          this.books[payload.index].data.reply_count = 0;
+          break;
+      }
     },
   },
 };
@@ -143,6 +192,9 @@ export default {
           @include NotoSans(1.4, 400, #000);
         }
       }
+      .reply-count {
+        width: 50px !important;
+      }
     }
     .btn-wrap {
       display: flex;
@@ -169,7 +221,7 @@ export default {
 }
 .size {
   &:nth-child(1) {
-    width: calc(100% - 460px);
+    width: calc(100% - 620px);
   }
   &:nth-child(2) {
     width: 120px;
@@ -195,7 +247,10 @@ export default {
     width: 60px;
   }
   &:nth-child(6) {
-    width: 100px;
+    width: 80px;
+  }
+  &:nth-child(7) {
+    width: 120px;
   }
 }
 @include mobile {

@@ -17,7 +17,7 @@
         </div>
       </div>
       <router-view />
-      <v-progress-circular :size="70" :width="7" color="amber" indeterminate class="spinner" v-if="loadingStatus"></v-progress-circular>
+      <v-progress-circular :size="70" :width="7" color="amber" indeterminate class="spinner" v-if="loading"></v-progress-circular>
     </v-main>
   </v-app>
 </template>
@@ -41,10 +41,6 @@ export default {
     ...mapGetters("common", ["loading", "windowWidth"]),
   },
   watch: {
-    //로딩 상태
-    loading(newValue) {
-      this.loadingStatus = newValue;
-    },
     //반응형 감지
     windowWidth(size) {
       size > mobileBreakPoint ? this.$store.commit("common/setDeviceStatus", false) : this.$store.commit("common/setDeviceStatus", true);
