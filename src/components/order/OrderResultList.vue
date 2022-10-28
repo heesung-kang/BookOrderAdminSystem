@@ -61,7 +61,8 @@
         <span class="total">합계 {{ totalPrice.toLocaleString() }}원</span>
       </div>
       <div class="d-flex">
-        <button class="primary" @click="showModal" :disabled="books[0].data.shop_order_status !== 0">회신</button>
+        <span v-if="books[0].data.shop_order_status !== 0">회신완료</span>
+        <button v-else class="primary" @click="showModal" :disabled="books[0].data.shop_order_status !== 0">회신</button>
       </div>
     </section>
     <!-- //총 합계 --->
@@ -91,14 +92,14 @@ export default {
     bookCount() {
       //총 권수 계산
       let count = 0;
-      this.books.forEach(ele => (count += Number(ele.data.count)));
+      this.books.forEach(ele => (count += Number(ele.data.reply_count)));
       return count;
     },
     totalPrice() {
       //총 금액 계산
       let price = 0;
       this.books.forEach(ele => {
-        price += (ele.data.price * ele.data.supply_rate * ele.data.count) / 100;
+        price += (ele.data.price * ele.data.supply_rate * ele.data.reply_count) / 100;
       });
       return price;
     },
