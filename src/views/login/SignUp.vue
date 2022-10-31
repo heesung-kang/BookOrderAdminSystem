@@ -2,19 +2,36 @@
   <div class="login-container">
     <div class="wrap">
       <h1>출판사 회원가입</h1>
-      <div class="mt10">출판사명 : <input class="basic" v-model="publisher" placeholder="출판사명" type="text" /></div>
       <div class="mt5">ID : <input class="basic" v-model="email" placeholder="이메일 입력" type="text" /></div>
       <div class="mt5">PW : <input class="basic" v-model="password" placeholder="비밀번호는 6자리이상 입력" type="password" /></div>
+      <div class="mt10">출판사명 : <input class="basic" v-model="publisher" placeholder="출판사명" type="text" /></div>
+      <div class="mt10">대표자명 : <input class="basic" v-model="name" placeholder="대표자명" type="text" /></div>
+      <div class="mt10">대표연락처 : <input class="basic" v-model="tel" placeholder="대표연락처" type="text" /></div>
+      <div class="mt10">사업자등록번호 : <input class="basic" v-model="cnNum" placeholder="사업자등록번호" type="text" /></div>
+      <div class="mt10 d-flex align-center">
+        주소 : <input v-model="zip" placeholder="우편번호" type="text" class="basic zip" readonly /><button
+          class="btn-zip"
+          @click="showAddressModalPopup"
+        >
+          우편번호 찾기
+        </button>
+      </div>
+      <div class="mt2"><input class="basic" v-model="address1" type="text" readonly /></div>
+      <div class="mt2"><input class="basic" v-model="address2" placeholder="나머지주소" type="text" /></div>
       <div class="btn-wrap"><button @click="userRegistration">가입</button></div>
     </div>
   </div>
 </template>
 
 <script>
+import AddressModal from "@/components/modal/ModalAddress";
+import { getPopupOpt } from "@/utils/modal";
+import { mapGetters } from "vuex";
 import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc, setDoc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { app, db } from "@/utils/db";
 const auth = getAuth(app);
+
 export default {
   name: "SignUp",
   data() {
@@ -22,8 +39,17 @@ export default {
       email: "",
       password: "",
       publisher: "",
+      name: "",
+      tel: "",
       sid: 0,
+      cnNum: "",
+      zip: "",
+      address1: "",
+      address2: "",
     };
+  },
+  computed: {
+    ...mapGetters("common", ["mobile"]),
   },
   async created() {
     //sid 자동 배정
@@ -42,6 +68,26 @@ export default {
       }
       if (this.password === "") {
         alert("비밀번호를 입력해주세요.");
+        return;
+      }
+      if (this.name === "") {
+        alert("대표자명을 입력해주세요.");
+        return;
+      }
+      if (this.tel === "") {
+        alert("대표연락처를 입력해주세요.");
+        return;
+      }
+      if (this.cnNum === "") {
+        alert("사업자등록 번호를 입력해주세요.");
+        return;
+      }
+      if (this.zip === "") {
+        alert("주소를 입력해주세요.");
+        return;
+      }
+      if (this.address2 === "") {
+        alert("주소를 입력해주세요.");
         return;
       }
       try {
@@ -77,6 +123,16 @@ export default {
               email: this.email,
               publisher: this.publisher,
               sid: this.sid,
+              name: this.name,
+              tel: this.tel,
+              cnNum: this.cnNum,
+              zip: this.zip,
+              address1: this.address1,
+              address2: this.address2,
+              bank: null,
+              accNum: null,
+              accHolder: null,
+              supplyRate: null,
               timestamp: serverTimestamp(),
             });
             alert("정상 가입 되셨습니다.");
@@ -93,6 +149,15 @@ export default {
         console.log(e);
       }
       this.$store.commit("common/setLoading", false);
+    },
+    showAddressModalPopup() {
+      this.mobile
+        ? this.$modal.show(AddressModal, { updateZip: this.updateZip }, getPopupOpt("AddressModal", "95%", "auto", false))
+        : this.$modal.show(AddressModal, { updateZip: this.updateZip }, getPopupOpt("AddressModal", "600px", "auto", false));
+    },
+    updateZip(data) {
+      this.address1 = data.addr1;
+      this.zip = data.zip;
     },
   },
 };
@@ -129,6 +194,13 @@ export default {
     &::placeholder {
       font-size: 1.4rem;
     }
+    &.zip {
+      width: 80px;
+      margin-left: 3px;
+    }
+    &:read-only {
+      background-color: #f4f4f4;
+    }
   }
   .btn-wrap {
     text-align: center;
@@ -140,6 +212,14 @@ export default {
       font-size: 1.5rem;
       border-radius: 3px;
     }
+  }
+  .btn-zip {
+    border: 1px solid #666;
+    border-radius: 3px;
+    height: 30px;
+    margin-left: 5px;
+    background: #f4f4f4;
+    padding: 0 10px;
   }
 }
 </style>
