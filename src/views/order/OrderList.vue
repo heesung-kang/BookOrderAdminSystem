@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h2 class="sub-title">주문 목록 보기</h2>
+    <h2 class="sub-title">주문 내역</h2>
     <section class="sub-container">
       <h3>서점 주문 리스트</h3>
       <section class="mt10">

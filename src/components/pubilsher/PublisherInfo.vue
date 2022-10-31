@@ -189,6 +189,26 @@ export default {
     },
     async infoUpdate() {
       //출판사 정보 업데이트
+      if (this.infoTemp.publisher === "") {
+        alert("출판사명을 입력해주세요");
+        return;
+      }
+      if (this.infoTemp.name === "") {
+        alert("대표자명을 입력해주세요");
+        return;
+      }
+      if (this.infoTemp.tel === "") {
+        alert("대표연락처를 입력해주세요");
+        return;
+      }
+      if (this.infoTemp.cnNum === "") {
+        alert("사업자등록번호를 입력해주세요");
+        return;
+      }
+      if (this.infoTemp.address2 === "") {
+        alert("주소를 입력해주세요");
+        return;
+      }
       this.infoModify = false;
       this.info = this.infoTemp;
       try {

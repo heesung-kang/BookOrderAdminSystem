@@ -49,7 +49,17 @@
             :dafaultValue="book.data.publisher_reply_status"
             v-if="book.data.shop_order_status === 0"
           />
-          <div v-else>{{ book.data.shop_order_status === 1 ? "회신" : "발주" }}</div>
+          <div v-else>
+            {{
+              book.data.publisher_reply_status === 0
+                ? "정상"
+                : book.data.publisher_reply_status === 1
+                ? "품절"
+                : book.data.publisher_reply_status === 2
+                ? "절판"
+                : "재고부족"
+            }}
+          </div>
         </div>
       </li>
     </ul>

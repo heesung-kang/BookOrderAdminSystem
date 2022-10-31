@@ -23,7 +23,19 @@
           <td>{{ item.shop_name }}</td>
           <td>{{ item.count }}</td>
           <td>
-            {{ item.shop_order_status === 0 ? "회신 전" : item.shop_order_status === 1 ? "회신" : item.shop_order_status === 2 ? "발주" : "출고" }}
+            {{
+              item.shop_order_status === 0
+                ? "회신 전"
+                : item.shop_order_status === 1
+                ? "회신"
+                : item.shop_order_status === 2
+                ? "발주"
+                : item.shop_order_status === 3
+                ? "출고대기"
+                : item.shop_order_status === 4
+                ? "출고"
+                : "완료"
+            }}
           </td>
           <td>{{ item.timestamp }}</td>
           <td>{{ item.replytimestamp }}</td>
