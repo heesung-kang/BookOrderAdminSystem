@@ -1,7 +1,13 @@
 <template>
   <section>
-    <h3>배본 정보</h3>
-    <table>
+    <h3 class="mt50">배본 정보</h3>
+    <table class="dis-tbl mt5">
+      <colgroup>
+        <col width="*" />
+        <col width="*" />
+        <col width="*" />
+        <col width="100" />
+      </colgroup>
       <thead>
         <tr>
           <th>배본사명</th>
@@ -27,16 +33,19 @@
           <td>
             <div class="d-flex">
               <div v-if="modify !== dis.id">
-                <button class="basic" @click="modifyTemp({ id: dis.id, companyName: dis.data.companyName, name: dis.data.name, tel: dis.data.tel })">
+                <button
+                  class="basic xs"
+                  @click="modifyTemp({ id: dis.id, companyName: dis.data.companyName, name: dis.data.name, tel: dis.data.tel })"
+                >
                   수정
                 </button>
               </div>
               <div v-else class="d-flex">
-                <button class="basic" @click="modify = ''">취소</button>
-                <button class="basic" @click="update(dis.id)">확인</button>
+                <button class="basic xs mr5" @click="modify = ''">취소</button>
+                <button class="primary xs" @click="update(dis.id)">확인</button>
               </div>
               <div v-if="modify !== dis.id">
-                <v-icon @click="del(dis.id)">mdi-close</v-icon>
+                <v-icon @click="del(dis.id)" class="delete">mdi-close</v-icon>
               </div>
             </div>
           </td>
@@ -45,7 +54,7 @@
           <td><input type="text" class="basic" v-model="companyName" /></td>
           <td><input type="text" class="basic" v-model="name" /></td>
           <td><input type="text" class="basic" v-model="tel" /></td>
-          <td><button class="basic" @click="add">추가</button></td>
+          <td><button class="primary" @click="add">추가</button></td>
         </tr>
       </tbody>
     </table>
@@ -154,4 +163,39 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+button.primary {
+  background-color: #000 !important;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 2.4rem;
+  color: #fff;
+}
+h3 {
+  font-size: 1.6rem;
+}
+.dis-tbl {
+  tr {
+    th {
+      border-top: 1px solid #000;
+      border-bottom: 1px solid #ccc;
+      height: 40px;
+    }
+    td {
+      height: 40px;
+      border-bottom: 1px solid #ccc;
+      text-align: center;
+      padding: 0 10px;
+      .xs {
+        font-size: 1.4rem !important;
+        padding: 0 10px !important;
+      }
+      .delete {
+        margin-left: 5px;
+        vertical-align: -9px;
+      }
+    }
+  }
+}
+</style>

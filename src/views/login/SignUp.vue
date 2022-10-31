@@ -13,7 +13,7 @@
           class="btn-zip"
           @click="showAddressModalPopup"
         >
-          우편번호 찾기
+          주소 찾기
         </button>
       </div>
       <div class="mt2"><input class="basic" v-model="address1" type="text" readonly /></div>
@@ -197,9 +197,6 @@ export default {
     &.zip {
       width: 80px;
       margin-left: 3px;
-    }
-    &:read-only {
-      background-color: #f4f4f4;
     }
   }
   .btn-wrap {
