@@ -7,6 +7,7 @@
         <ul @click="close">
           <li :class="{ active: activeStatus === 1 }"><router-link to="/OrderList">주문 목록 보기</router-link></li>
           <li :class="{ active: activeStatus === 2 }"><router-link to="/DeliveryOrder">결제 내역 보기 및 출고 지시</router-link></li>
+          <li :class="{ active: activeStatus === 3 }"><router-link to="/PublisherInfo">출판사정보</router-link></li>
         </ul>
       </nav>
     </aside>
@@ -54,6 +55,9 @@ export default {
           break;
         case "DeliveryOrder":
           this.activeStatus = 2;
+          break;
+        case "PublisherInfo":
+          this.activeStatus = 3;
           break;
       }
     },
