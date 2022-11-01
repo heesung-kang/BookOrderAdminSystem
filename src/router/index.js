@@ -44,7 +44,16 @@ const router = new VueRouter({
       },
     },
     {
-      path: "/DeliveryOrder",
+      path: "/DeliveryList",
+      name: "DeliveryList",
+      components: {
+        lnb,
+        footer,
+        contents: () => import("@/views/order/DeliveryList.vue"),
+      },
+    },
+    {
+      path: "/DeliveryOrder/:id/:date/:orderRealTimeId/:shopName/:uid",
       name: "DeliveryOrder",
       components: {
         lnb,
