@@ -122,6 +122,9 @@ export default {
           tel: this.tel,
           uid: this.uid,
         });
+        this.companyName = "";
+        this.name = "";
+        this.tel = "";
         await this.load();
       } catch (e) {
         console.log(e);

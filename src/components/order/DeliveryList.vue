@@ -9,41 +9,25 @@
         <tr>
           <th>서점</th>
           <th>수량</th>
-          <th>상태</th>
-          <th>발신일시</th>
-          <th>회신일시</th>
+          <th>발주일시</th>
         </tr>
       </thead>
       <tbody>
         <tr
           v-for="(item, index) in result"
           :key="index"
-          @click="statement({ id: item.sid, date: item.timestamp, orderTimeId: item.order_time_id, shopName: item.shop_name, uid: item.uid })"
+          @click="
+            statement({ id: item.sid, date: item.timestamp, orderRealTimeId: item.order_real_time_id, shopName: item.shop_name, uid: item.uid })
+          "
         >
           <td>{{ item.shop_name }}</td>
-          <td>{{ item.count }}</td>
-          <td>
-            {{
-              item.shop_order_status === 0
-                ? "회신 전"
-                : item.shop_order_status === 1
-                ? "회신"
-                : item.shop_order_status === 2
-                ? "발주"
-                : item.shop_order_status === 3
-                ? "출고대기"
-                : item.shop_order_status === 4
-                ? "출고"
-                : "완료"
-            }}
-          </td>
+          <td>{{ item.reply_count }}</td>
           <td>{{ item.timestamp }}</td>
-          <td>{{ item.replytimestamp }}</td>
         </tr>
       </tbody>
       <tfoot v-if="result.length === 0">
         <tr>
-          <td colspan="5">주문 리스트가 없습니다.</td>
+          <td colspan="3">주문 리스트가 없습니다.</td>
         </tr>
       </tfoot>
     </table>
@@ -83,7 +67,6 @@ export default {
       const {
         info: { sid },
       } = getCookie("userInfo");
-      console.log(sid);
       const first = query(
         collection(db, "orderRequest"),
         where("sid", "==", sid),
@@ -94,10 +77,8 @@ export default {
       const documentSnapshots = await getDocs(first);
       documentSnapshots.forEach(doc => {
         const temp = doc.data();
-        temp.timestamp = this.$date(doc.data().order_time.toDate()).format("YYYY-MM-DD HH:mm:ss");
-        doc.data().reply_time === null
-          ? (temp.replytimestamp = "-")
-          : (temp.replytimestamp = this.$date(doc.data().reply_time.toDate()).format("YYYY-MM-DD HH:mm:ss"));
+        temp.timestamp = this.$date(doc.data().order_real_time.toDate()).format("YYYY-MM-DD HH:mm:ss");
+        temp.searchTimestamp = this.$date(doc.data().order_real_time.toDate()).format("YYYY-MM-DD");
         this.books.push(temp);
       });
       this.result = arrMerge(this.books);
@@ -116,7 +97,7 @@ export default {
           return ele;
         } else if (this.searchObj.shop_name === "" && this.searchObj.startDate !== undefined) {
           //날짜만 있는경우
-          if (ele.timestamp >= this.searchObj.startDate && ele.timestamp <= this.searchObj.endDate) {
+          if (ele.searchTimestamp >= this.searchObj.startDate && ele.searchTimestamp <= this.searchObj.endDate) {
             return ele;
           }
         } else if (this.searchObj.shop_name !== "") {
@@ -124,7 +105,7 @@ export default {
           if (ele.shop_name.includes(this.searchObj.shop_name)) {
             if (this.searchObj.startDate !== undefined) {
               //검색어와 날짜가 있는 경우
-              if (ele.timestamp >= this.searchObj.startDate && ele.timestamp <= this.searchObj.endDate) {
+              if (ele.searchTimestamp >= this.searchObj.startDate && ele.searchTimestamp <= this.searchObj.endDate) {
                 return ele;
               }
             } else {
@@ -135,7 +116,7 @@ export default {
       });
     },
     statement(data) {
-      this.$router.push(`/OrderListDetail/${data.id}/${data.date}/${data.orderTimeId}/${data.shopName}/${data.uid}`);
+      this.$router.push(`/DeliveryOrder/${data.id}/${data.date}/${data.orderRealTimeId}/${data.shopName}/${data.uid}`);
     },
   },
 };

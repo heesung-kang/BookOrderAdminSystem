@@ -89,6 +89,7 @@ export default {
       documentSnapshots.forEach(doc => {
         const temp = doc.data();
         temp.timestamp = this.$date(doc.data().order_time.toDate()).format("YYYY-MM-DD HH:mm:ss");
+        temp.searchTimestamp = this.$date(doc.data().order_time.toDate()).format("YYYY-MM-DD");
         doc.data().reply_time === null
           ? (temp.replytimestamp = "-")
           : (temp.replytimestamp = this.$date(doc.data().reply_time.toDate()).format("YYYY-MM-DD HH:mm:ss"));
@@ -110,7 +111,7 @@ export default {
           return ele;
         } else if (this.searchObj.shop_name === "" && this.searchObj.startDate !== undefined) {
           //날짜만 있는경우
-          if (ele.timestamp >= this.searchObj.startDate && ele.timestamp <= this.searchObj.endDate) {
+          if (ele.searchTimestamp >= this.searchObj.startDate && ele.searchTimestamp <= this.searchObj.endDate) {
             return ele;
           }
         } else if (this.searchObj.shop_name !== "") {
@@ -118,7 +119,7 @@ export default {
           if (ele.shop_name.includes(this.searchObj.shop_name)) {
             if (this.searchObj.startDate !== undefined) {
               //검색어와 날짜가 있는 경우
-              if (ele.timestamp >= this.searchObj.startDate && ele.timestamp <= this.searchObj.endDate) {
+              if (ele.searchTimestamp >= this.searchObj.startDate && ele.searchTimestamp <= this.searchObj.endDate) {
                 return ele;
               }
             } else {

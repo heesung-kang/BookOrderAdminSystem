@@ -1,6 +1,6 @@
 <template>
   <div class="selects">
-    <v-select dense v-model="select" :items="itemList" item-text="item" item-value="value" outlined></v-select>
+    <v-select dense v-model="select" :items="itemList" item-text="item" item-value="value" outlined @input="$emit('change', select)"></v-select>
   </div>
 </template>
 
@@ -67,7 +67,7 @@ export default {
 }
 @include mobile {
   .selects::v-deep {
-    max-width: 100px;
+    max-width: 150px;
     min-width: 110px;
   }
 }

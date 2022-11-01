@@ -25,10 +25,10 @@
         </div>
         <div class="isbn">{{ book.data.isbn }}</div>
         <div class="d-flex price-info">
-          <div class="normal-price"><span v-if="mobile">정가</span> {{ book.data.price?.toLocaleString() }}</div>
+          <div class="normal-price"><span v-if="mobile">정가</span> {{ book.data.price?.toLocaleString() }}원</div>
           <div><span v-if="mobile">공급률</span> {{ book.data.supply_rate }}%</div>
         </div>
-        <div class="final-price"><span v-if="mobile">공급가</span> {{ ((book.data.price * book.data.supply_rate) / 100).toLocaleString() }}</div>
+        <div class="final-price"><span v-if="mobile">공급가</span> {{ ((book.data.price * book.data.supply_rate) / 100).toLocaleString() }}원</div>
         <div class="count"><span v-if="mobile">주문</span> {{ book.data.count }}</div>
         <div class="count">
           <span v-if="mobile">공급</span>

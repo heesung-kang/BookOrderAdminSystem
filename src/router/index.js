@@ -53,7 +53,7 @@ const router = new VueRouter({
       },
     },
     {
-      path: "/DeliveryOrder",
+      path: "/DeliveryOrder/:id/:date/:orderRealTimeId/:shopName/:uid",
       name: "DeliveryOrder",
       components: {
         lnb,
