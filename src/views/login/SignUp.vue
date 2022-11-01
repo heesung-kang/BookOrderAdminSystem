@@ -95,7 +95,7 @@ export default {
         createUserWithEmailAndPassword(auth, this.email, this.password)
           .then(() => {
             updateProfile(getAuth().currentUser, {
-              displayName: `${this.publisher}-2`,
+              displayName: `${this.publisher}-2`, //2:권한
             })
               .then(() => {
                 this.addInfo();

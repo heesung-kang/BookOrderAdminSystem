@@ -21,7 +21,7 @@
           "
         >
           <td>{{ item.shop_name }}</td>
-          <td>{{ item.reply_count }}</td>
+          <td>{{ item.totalCount }}</td>
           <td>{{ item.timestamp }}</td>
         </tr>
       </tbody>

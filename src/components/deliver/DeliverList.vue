@@ -46,7 +46,7 @@
         <span class="total">합계 {{ totalPrice.toLocaleString() }}원</span>
       </div>
       <div class="address">
-        <p>수령지: 서울시 관악구 신림동 54-1 낙성대학교 기숙사 A동</p>
+        <p>수령지: {{ address1 }} {{ address2 }}</p>
         <p v-if="books[0].data.shop_order_status > 3">배본사 : {{ books[0].data.distribution }}</p>
       </div>
     </section>
@@ -66,7 +66,7 @@ import { mapGetters } from "vuex";
 import Selects from "@/components/form/Selects";
 import BookListSkeleton from "@/skeletons/BookListSkeleton";
 import BookListMobileSkeleton from "@/skeletons/BookListMobileSkeleton";
-import { collection, getDocs, query, where, writeBatch, serverTimestamp, doc } from "firebase/firestore";
+import { collection, getDocs, query, where, writeBatch, serverTimestamp, doc, getDoc } from "firebase/firestore";
 import { db } from "@/utils/db";
 export default {
   components: { Selects, BookListSkeleton, BookListMobileSkeleton },
@@ -76,6 +76,8 @@ export default {
       select: "",
       itemList: [{ item: "배본사 선택", value: "" }],
       books: [],
+      address1: "",
+      address2: "",
     };
   },
   computed: {
@@ -98,6 +100,7 @@ export default {
   async created() {
     await this.load();
     await this.distribution();
+    await this.getAddress();
   },
   methods: {
     async load() {
@@ -120,6 +123,14 @@ export default {
       }
       this.$store.commit("common/setSkeleton", false);
     },
+    //수령지 주소
+    async getAddress() {
+      const uid = this.books[0].data.uid;
+      const docRef = doc(db, "shopInfo", uid);
+      const docSnap = await getDoc(docRef);
+      this.address1 = docSnap.data().address1;
+      this.address2 = docSnap.data().address2;
+    },
     //배본사 select
     async distribution() {
       const first = query(collection(db, "distribution"));
@@ -133,6 +144,10 @@ export default {
     },
     //출고지시
     async order() {
+      if (this.select === "") {
+        alert("배본사를 선택해주세요.");
+        return;
+      }
       const batch = writeBatch(db);
       try {
         this.$store.commit("common/setLoading", true);

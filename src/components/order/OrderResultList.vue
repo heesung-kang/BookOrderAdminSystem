@@ -16,7 +16,12 @@
       <div>회신</div>
     </section>
     <ul class="body">
-      <li class="d-flex align-center" v-for="(book, index) in books" :key="index">
+      <li
+        class="d-flex align-center"
+        v-for="(book, index) in books"
+        :key="index"
+        :class="{ none: book.data.shop_order_status > 1 && book.data.order_check === false }"
+      >
         <div class="d-flex align-center info-wrap">
           <div class="book-info">
             <h3>{{ book.data.subject }}</h3>
@@ -210,6 +215,16 @@ export default {
     .btn-wrap {
       display: flex;
       justify-content: center;
+    }
+    &.none {
+      h3 {
+        color: #989898 !important;
+        text-decoration: line-through;
+      }
+      div {
+        color: #989898 !important;
+        text-decoration: line-through;
+      }
     }
   }
 }

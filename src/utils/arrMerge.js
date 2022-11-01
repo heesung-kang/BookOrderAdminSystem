@@ -7,15 +7,18 @@ export default function arrMerge(arr) {
     flag = false;
     for (let value in resultArr) {
       // 중복 체크
-      if (resultArr[value].shop_name === arr[i].shop_name && resultArr[value].timestamp === arr[i].timestamp) {
+      if (resultArr[value].publisher === arr[i].publisher && resultArr[value].timestamp === arr[i].timestamp) {
         flag = true;
       }
       if (flag) {
         ++cnt;
-        if (resultArr[value].shop_order_status === 0) {
-          resultArr[value].count += Number(arr[i].count);
-        } else {
+        resultArr[value].count += Number(arr[i].count);
+        if (resultArr[value].shop_order_status === 1) {
           resultArr[value].reply_count += Number(arr[i].reply_count);
+        } else {
+          if (arr[i].order_check === true) {
+            resultArr[value].reply_count += Number(arr[i].reply_count);
+          }
         }
       }
     }

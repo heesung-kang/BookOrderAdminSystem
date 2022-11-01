@@ -22,7 +22,8 @@
         >
           <td>{{ item.shop_name }}</td>
           <td v-if="item.shop_order_status === 0">{{ item.count }}</td>
-          <td v-else>{{ item.reply_count }}</td>
+          <td v-else-if="item.shop_order_status === 1">{{ item.reply_count }}</td>
+          <td v-else>{{ item.totalCount }}</td>
           <td>
             {{
               item.shop_order_status === 0
