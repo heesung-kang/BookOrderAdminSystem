@@ -21,7 +21,8 @@
           @click="statement({ id: item.sid, date: item.timestamp, orderTimeId: item.order_time_id, shopName: item.shop_name, uid: item.uid })"
         >
           <td>{{ item.shop_name }}</td>
-          <td>{{ item.count }}</td>
+          <td v-if="item.shop_order_status === 0">{{ item.count }}</td>
+          <td v-else>{{ item.reply_count }}</td>
           <td>
             {{
               item.shop_order_status === 0
