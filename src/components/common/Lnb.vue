@@ -4,7 +4,10 @@
       <div class="pt26 logo"><img src="@/assets/images/logo.svg" alt="instaPay" /></div>
       <div class="system-name">서점용 도서 주문 시스템</div>
       <nav class="lnb">
-        <ul @click="close">
+        <ul @click="close" v-if="type === 1">
+          <li :class="{ active: activeStatus === 4 }"><router-link to="/PublisherList">출판사 리스트</router-link></li>
+        </ul>
+        <ul @click="close" v-else>
           <li :class="{ active: activeStatus === 1 }"><router-link to="/OrderList">주문 목록 보기</router-link></li>
           <li :class="{ active: activeStatus === 2 }"><router-link to="/DeliveryList">결제 내역 보기 및 출고 지시</router-link></li>
           <li :class="{ active: activeStatus === 3 }"><router-link to="/PublisherInfo">출판사 정보</router-link></li>
@@ -16,6 +19,7 @@
 </template>
 
 <script>
+import { getCookie } from "@/utils/cookie";
 export default {
   props: ["show"],
   data() {
@@ -23,6 +27,7 @@ export default {
       activeStatus: 0,
       routeName: "",
       isActive: false,
+      type: "",
     };
   },
   watch: {
@@ -37,6 +42,11 @@ export default {
   created() {
     this.routeName = this.$route.name; //새로고침 또는 다이렉트 접속시 현재 페이지 확인
     this.menuDefaultSetup();
+    const { type } = getCookie("userInfo");
+    this.type = type;
+    if (type === 1) {
+      this.$router.push("/PublisherList");
+    }
   },
   methods: {
     close() {
@@ -61,6 +71,9 @@ export default {
           break;
         case "PublisherInfo":
           this.activeStatus = 3;
+          break;
+        case "PublisherList":
+          this.activeStatus = 4;
           break;
       }
     },
