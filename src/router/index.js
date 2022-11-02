@@ -70,15 +70,6 @@ const router = new VueRouter({
         contents: () => import("@/views/publisher/PublisherInfo.vue"),
       },
     },
-    {
-      path: "/PublisherList",
-      name: "PublisherList",
-      components: {
-        lnb,
-        footer,
-        contents: () => import("@/views/publisher/PublisherList.vue"),
-      },
-    },
     //404
     {
       path: "*",
