@@ -33,7 +33,9 @@
         <div class="final-price"><span v-if="mobile">공급가</span> {{ ((book.data.price * book.data.supply_rate) / 100).toLocaleString() }}원</div>
         <div class="d-flex price-info">
           <div class="normal-price"><span v-if="mobile">주문</span> {{ book.data.count }}</div>
-          <div><span v-if="mobile">공급</span> {{ book.data.reply_count }}</div>
+          <div class="count">
+            <span v-if="mobile">공급</span> <span :class="{ warning: book.data.count > book.data.reply_count }">{{ book.data.reply_count }}</span>
+          </div>
         </div>
         <div><span v-if="mobile">상태</span> {{ book.data.shop_order_status === 3 ? "-" : book.data.shop_order_status === 4 ? "출고" : "완료" }}</div>
       </li>
@@ -201,6 +203,13 @@ export default {
     margin-bottom: 6px;
     .final-price {
       @include NotoSans(1.4, 700, #000);
+    }
+    .count {
+      .warning {
+        color: red !important;
+        background-color: #fff !important;
+        font-weight: 700 !important;
+      }
     }
     & > div {
       text-align: center;
