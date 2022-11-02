@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import { getCookie } from "@/utils/cookie";
 const lnb = () => import("@/components/common/Lnb.vue");
 const footer = () => import("@/components/common/Footer.vue");
 
