@@ -82,7 +82,7 @@ export default {
         alert("사업자등록 번호를 입력해주세요.");
         return;
       }
-      if (this.zip === "") {
+      if (this.address1 === "") {
         alert("주소를 입력해주세요.");
         return;
       }
@@ -106,14 +106,14 @@ export default {
           })
           .catch(error => {
             alert(error.message);
+            this.$store.commit("common/setLoading", false);
           });
       } catch (e) {
         console.log(e);
+        this.$store.commit("common/setLoading", false);
       }
-      this.$store.commit("common/setLoading", false);
     },
     async addInfo() {
-      this.$store.commit("common/setLoading", true);
       try {
         await signInWithEmailAndPassword(auth, this.email, this.password)
           .then(async userCredential => {
@@ -135,6 +135,7 @@ export default {
               supplyRate: null,
               timestamp: serverTimestamp(),
             });
+            this.$store.commit("common/setLoading", false);
             alert("정상 가입 되셨습니다.");
             this.$router.push("/Login");
             //sid count 업데이트
@@ -144,11 +145,12 @@ export default {
           })
           .catch(error => {
             console.log(error);
+            this.$store.commit("common/setLoading", false);
           });
       } catch (e) {
         console.log(e);
+        this.$store.commit("common/setLoading", false);
       }
-      this.$store.commit("common/setLoading", false);
     },
     showAddressModalPopup() {
       this.mobile

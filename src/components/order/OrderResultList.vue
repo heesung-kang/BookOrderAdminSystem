@@ -44,7 +44,7 @@
             :disabled="book.data.publisher_reply_status !== 3"
             v-if="book.data.shop_order_status === 0"
           />
-          <span v-else>{{ book.data.reply_count }}</span>
+          <span v-else :class="{ warning: book.data.count > book.data.reply_count }">{{ book.data.reply_count }}</span>
         </div>
         <!-- 버튼종류 : 정상, 품절, 절판, 재고부족 -->
         <div class="btn-wrap">
@@ -224,6 +224,13 @@ export default {
       div {
         color: #989898 !important;
         text-decoration: line-through;
+      }
+    }
+    .count {
+      .warning {
+        color: red !important;
+        background-color: #fff !important;
+        font-weight: 700 !important;
       }
     }
   }
