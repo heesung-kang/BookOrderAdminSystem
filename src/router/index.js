@@ -25,6 +25,12 @@ const router = new VueRouter({
       meta: { unauthorized: true },
     },
     {
+      path: "/FindPw",
+      name: "FindPw",
+      component: () => import("@/views/login/FindPw.vue"),
+      meta: { unauthorized: true },
+    },
+    {
       path: "/OrderList",
       name: "OrderList",
       components: {

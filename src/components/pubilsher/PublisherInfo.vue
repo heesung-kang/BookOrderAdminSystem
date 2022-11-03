@@ -18,6 +18,10 @@
         <tr>
           <td>아이디(이메일)</td>
           <td>{{ info.email }}</td>
+          <!--     이메일 수정 숨김 처리     <td>
+            <span v-if="!infoModify">{{ info.email }}</span
+            ><input type="text" v-model="infoTemp.email" class="basic" v-else />
+          </td>-->
         </tr>
         <tr>
           <td>대표자명</td>
@@ -115,9 +119,10 @@
 import { mapGetters } from "vuex";
 import { getCookie } from "@/utils/cookie";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "@/utils/db";
+import { db, app } from "@/utils/db";
 import AddressModal from "@/components/modal/ModalAddress";
 import { getPopupOpt } from "@/utils/modal";
+import { getAuth, updateEmail } from "firebase/auth";
 export default {
   name: "Distribution",
   data() {
@@ -168,6 +173,7 @@ export default {
         this.supplyRate = docSnap.data().supplyRate;
       } catch (e) {
         console.log(e);
+        this.$store.commit("common/setLoading", false);
       }
       this.$store.commit("common/setLoading", false);
     },
@@ -175,6 +181,7 @@ export default {
       //정산정보 업데이트
       this.modify = false;
       try {
+        this.$store.commit("common/setLoading", true);
         const updateRef = doc(db, "publisherInfo", this.uid);
         await updateDoc(updateRef, {
           bank: this.bank,
@@ -185,7 +192,9 @@ export default {
         await this.load();
       } catch (e) {
         console.log(e);
+        this.$store.commit("common/setLoading", false);
       }
+      this.$store.commit("common/setLoading", false);
     },
     async infoUpdate() {
       //출판사 정보 업데이트
@@ -209,6 +218,7 @@ export default {
         alert("주소를 입력해주세요");
         return;
       }
+      this.$store.commit("common/setLoading", true);
       this.infoModify = false;
       this.info = this.infoTemp;
       try {
@@ -216,16 +226,29 @@ export default {
         await updateDoc(updateRef, {
           publisher: this.infoTemp.publisher,
           name: this.infoTemp.name,
+          email: this.infoTemp.email,
           tel: this.infoTemp.tel,
           cnNum: this.infoTemp.cnNum,
           zip: this.zip,
           address1: this.infoTemp.address1,
           address2: this.infoTemp.address2,
         });
+        const auth = getAuth(app);
+        await updateEmail(auth.currentUser, this.infoTemp.email)
+          .then(() => {
+            this.$store.commit("common/setLoading", false);
+          })
+          .catch(error => {
+            this.$store.commit("common/setLoading", false);
+            console.log(error);
+          });
+        this.$store.commit("common/setLoading", false);
         await this.load();
       } catch (e) {
         console.log(e);
+        this.$store.commit("common/setLoading", false);
       }
+      this.$store.commit("common/setLoading", false);
     },
     showAddressModalPopup() {
       this.mobile
