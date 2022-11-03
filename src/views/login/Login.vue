@@ -48,6 +48,7 @@ export default {
                 //1:관리자, 2:출판사, 3:서점
                 if (Number(userName[1]) !== 2) {
                   alert("출판사회원이 아닙니다.");
+                  this.$store.commit("common/setLoading", false);
                 } else {
                   const docSnap = await getDoc(doc(db, "publisherInfo", user.uid));
                   saveCookie("userInfo", { uid: user.uid, name: userName[0], email: user.email, type: Number(userName[1]), info: docSnap.data() });
