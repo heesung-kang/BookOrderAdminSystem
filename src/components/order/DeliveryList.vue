@@ -1,36 +1,12 @@
 <template>
   <section>
     <TableSkeleton v-if="skeletonLoading" />
-    <table class="basic" v-else>
-      <caption>
-        서점별 주문리스트
-      </caption>
-      <thead>
-        <tr>
-          <th>서점</th>
-          <th>수량</th>
-          <th>발주일시</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(item, index) in result"
-          :key="index"
-          @click="
-            statement({ id: item.sid, date: item.timestamp, orderRealTimeId: item.order_real_time_id, shopName: item.shop_name, uid: item.uid })
-          "
-        >
-          <td>{{ item.shop_name }}</td>
-          <td>{{ item.totalCount }}</td>
-          <td>{{ item.timestamp }}</td>
-        </tr>
-      </tbody>
-      <tfoot v-if="result.length === 0">
-        <tr>
-          <td colspan="3">주문 리스트가 없습니다.</td>
-        </tr>
-      </tfoot>
-    </table>
+    <div v-else>
+      <OrderListTable :status="3" :data="result" />
+      <OrderListTable :status="4" :data="result" />
+      <OrderListTable :status="5" :data="result" />
+      <div v-if="result.length === 0">리스트가 없습니다.</div>
+    </div>
   </section>
 </template>
 
@@ -41,9 +17,10 @@ import { db } from "@/utils/db";
 import { getCookie } from "@/utils/cookie";
 import arrMerge from "@/utils/arrMerge";
 import TableSkeleton from "@/skeletons/TableSkeleton";
+import OrderListTable from "@/components/order/OrderListTable";
 export default {
   name: "OrderList",
-  components: { TableSkeleton },
+  components: { OrderListTable, TableSkeleton },
   props: ["searchObj"],
   data() {
     return {
@@ -72,7 +49,7 @@ export default {
         where("sid", "==", sid),
         where("shop_order_status", ">=", 3),
         orderBy("shop_order_status", "desc"),
-        orderBy("order_real_time", "desc"),
+        orderBy("order_real_time_id", "desc"),
       );
       const documentSnapshots = await getDocs(first);
       documentSnapshots.forEach(doc => {
@@ -115,15 +92,6 @@ export default {
         }
       });
     },
-    statement(data) {
-      this.$router.push(`/DeliveryOrder/${data.id}/${data.date}/${data.orderRealTimeId}/${data.shopName}/${data.uid}`);
-    },
   },
 };
 </script>
-
-<style lang="scss" scoped>
-td {
-  cursor: pointer;
-}
-</style>
