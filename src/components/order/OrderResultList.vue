@@ -100,6 +100,7 @@ export default {
     return {
       selected: [],
       books: [],
+      error: 0,
     };
   },
   computed: {
@@ -143,9 +144,19 @@ export default {
       this.$store.commit("common/setSkeleton", false);
     },
     showModal() {
-      this.mobile
-        ? this.$modal.show(ModalMemo, { books: this.books, update: this.load }, getPopupOpt("ModalMemo", "95%", "auto", false))
-        : this.$modal.show(ModalMemo, { books: this.books, update: this.load }, getPopupOpt("ModalMemo", "500px", "auto", false));
+      this.error = 0; //공급 수량 체크
+      this.books.forEach(ele => {
+        if (ele.data.count < ele.data.reply_count) {
+          this.error += 1;
+        }
+      });
+      if (this.error === 0) {
+        this.mobile
+          ? this.$modal.show(ModalMemo, { books: this.books, update: this.load }, getPopupOpt("ModalMemo", "95%", "auto", false))
+          : this.$modal.show(ModalMemo, { books: this.books, update: this.load }, getPopupOpt("ModalMemo", "500px", "auto", false));
+      } else {
+        alert("공급이 주문보다 많습니다.");
+      }
     },
     //회신상태 변경
     changeStatus(payload) {
