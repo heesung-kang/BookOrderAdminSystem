@@ -95,3 +95,9 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.none {
+  text-align: center;
+  margin-top: 20px;
+}
+</style>
