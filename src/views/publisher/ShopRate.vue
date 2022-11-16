@@ -23,7 +23,6 @@
             <td>{{ item.data.email }}</td>
             <td>
               <span><input type="number" v-model="item.data.rate" /></span>
-              <button class="save" @click="shopRateSave({ uid: item.uid, rate: item.data.rate })">저장</button>
             </td>
             <td><button class="each">서적별 설정</button></td>
           </tr>
@@ -34,6 +33,7 @@
           </tr>
         </tfoot>
       </table>
+      <div class="save mt20"><button class="primary" @click="shopRateSave()">저장</button></div>
     </section>
   </section>
 </template>
@@ -108,21 +108,21 @@ export default {
       }
     },
     //서점별 공급률 저장
-    async shopRateSave(data) {
+    async shopRateSave() {
       try {
         this.$store.commit("common/setLoading", true);
         //일괄 업데이트
+        const updateArr = [];
+        this.shops.forEach(ele => {
+          if (ele.data.rate !== "" && ele.data.rate !== undefined) {
+            updateArr.push({ uid: ele.uid, rate: ele.data.rate });
+          }
+        });
         const batch = writeBatch(db);
         await this.sids.forEach(id => {
           const docRef = doc(db, "booksData", id);
-          //동일아이디 빼기
-          const filter = this.loadRate.filter(ele => {
-            if (ele.uid !== data.uid) {
-              return ele;
-            }
-          });
           batch.update(docRef, {
-            shop_rate: [...filter, { uid: data.uid, rate: data.rate }],
+            shop_rate: updateArr,
           });
         });
         await batch.commit();
@@ -168,12 +168,6 @@ table {
         padding: 0 5px;
         background-color: #fff;
       }
-      .save {
-        border: 1px solid #000;
-        background-color: #fff;
-        margin-left: 3px;
-        padding: 0 5px;
-      }
       .each {
         background-color: deepskyblue;
         color: #fff;
@@ -182,6 +176,10 @@ table {
       }
     }
   }
+}
+.save {
+  display: flex;
+  justify-content: flex-end;
 }
 .search {
   margin-bottom: 10px;
