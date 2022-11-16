@@ -78,6 +78,15 @@ const router = new VueRouter({
         contents: () => import("@/views/publisher/PublisherInfo.vue"),
       },
     },
+    {
+      path: "/ShopRate",
+      name: "ShopRate",
+      components: {
+        lnb,
+        footer,
+        contents: () => import("@/views/publisher/ShopRate.vue"),
+      },
+    },
     //404
     {
       path: "*",

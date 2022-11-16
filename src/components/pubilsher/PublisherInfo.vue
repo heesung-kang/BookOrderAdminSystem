@@ -70,7 +70,10 @@
     <!-- //버튼 영역 -->
 
     <!-- 정산정보 -->
-    <h3 class="mt50">정산 정보</h3>
+    <div class="d-flex justify-space-between mt50">
+      <h3>정산 정보</h3>
+      <div><router-link to="/ShopRate" class="btn-xs">서점별 공급률 설정</router-link></div>
+    </div>
     <section class="cal-wrap mt5">
       <article>
         <div>은행명</div>
@@ -200,7 +203,7 @@ export default {
           accHolder: this.accHolder,
           supplyRate: this.supplyRate,
         });
-        //일괄 저장
+        //일괄 업데이트
         const batch = writeBatch(db);
         await this.sids.forEach(id => {
           const docRef = doc(db, "booksData", id);
