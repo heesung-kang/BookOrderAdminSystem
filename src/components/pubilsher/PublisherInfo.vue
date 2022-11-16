@@ -118,7 +118,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { getCookie } from "@/utils/cookie";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, collection, query, where, limit, getDocs, writeBatch } from "firebase/firestore";
 import { db, app } from "@/utils/db";
 import AddressModal from "@/components/modal/ModalAddress";
 import { getPopupOpt } from "@/utils/modal";
@@ -130,6 +130,7 @@ export default {
       infoModify: false,
       modify: false,
       uid: "",
+      sid: "",
       info: {},
       infoTemp: {},
       bank: "",
@@ -137,15 +138,25 @@ export default {
       accHolder: "",
       supplyRate: "",
       zip: "",
+      sids: [],
     };
   },
   computed: {
     ...mapGetters("common", ["mobile"]),
   },
   created() {
-    const { uid } = getCookie("userInfo");
-    this.uid = uid;
+    const infos = getCookie("userInfo");
+    this.uid = infos.uid;
+    this.sid = infos.info.sid;
     this.load();
+  },
+  async mounted() {
+    //출판사 보유 서적 id 불러오기
+    const first = query(collection(db, "booksData"), where("sid", "==", this.sid));
+    const documentSnapshots = await getDocs(first);
+    documentSnapshots.forEach(doc => {
+      this.sids.push(doc.id);
+    });
   },
   methods: {
     statusChange() {
@@ -170,7 +181,7 @@ export default {
         this.bank = docSnap.data().bank;
         this.accNum = docSnap.data().accNum;
         this.accHolder = docSnap.data().accHolder;
-        this.supplyRate = docSnap.data().supplyRate;
+        await this.basicRate();
       } catch (e) {
         console.log(e);
         this.$store.commit("common/setLoading", false);
@@ -189,6 +200,15 @@ export default {
           accHolder: this.accHolder,
           supplyRate: this.supplyRate,
         });
+        //일괄 저장
+        const batch = writeBatch(db);
+        await this.sids.forEach(id => {
+          const docRef = doc(db, "booksData", id);
+          batch.update(docRef, {
+            supply_rate: this.supplyRate,
+          });
+        });
+        await batch.commit();
         await this.load();
       } catch (e) {
         console.log(e);
@@ -258,6 +278,14 @@ export default {
     updateZip(data) {
       this.infoTemp.address1 = data.addr1;
       this.zip = data.zip;
+    },
+    //기본 공급률 불러오기
+    async basicRate() {
+      const first = query(collection(db, "booksData"), where("sid", "==", this.sid), limit(1));
+      const documentSnapshots = await getDocs(first);
+      documentSnapshots.forEach(doc => {
+        this.supplyRate = doc.data().supply_rate;
+      });
     },
   },
 };
