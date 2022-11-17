@@ -20,6 +20,7 @@ export default function arrMerge(arr) {
             resultArr[value].reply_count += Number(arr[i].reply_count);
           }
         }
+        flag = false;
       }
     }
     if (cnt === 0) {
