@@ -146,6 +146,12 @@ button{
     font-weight: 400 !important;
   }
 }
+.btn-xs{
+  background-color:deepskyblue;
+  color:#fff;
+  padding:0 10px;
+  border-radius:3px;
+}
 /*table*/
 table{
   &.basic{

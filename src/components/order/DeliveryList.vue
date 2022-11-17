@@ -5,7 +5,7 @@
       <OrderListTable :status="3" :data="result" />
       <OrderListTable :status="4" :data="result" />
       <OrderListTable :status="5" :data="result" />
-      <div v-if="result.length === 0">리스트가 없습니다.</div>
+      <div v-if="result.length === 0" class="none">출고목록이 없습니다.</div>
     </div>
   </section>
 </template>
@@ -98,6 +98,7 @@ export default {
 <style lang="scss" scoped>
 .none {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 50px;
+  @include NotoSans(1.4, 400, #000);
 }
 </style>
