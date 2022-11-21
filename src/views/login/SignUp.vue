@@ -132,7 +132,7 @@ export default {
               bank: null,
               accNum: null,
               accHolder: null,
-              supplyRate: null,
+              supplyRate: "100",
               timestamp: serverTimestamp(),
             });
             this.$store.commit("common/setLoading", false);
