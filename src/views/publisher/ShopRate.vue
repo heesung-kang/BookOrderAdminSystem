@@ -21,7 +21,9 @@
             <td>{{ item.data.shop }}</td>
             <td>{{ item.data.email }}</td>
             <td>
-              <span><input type="number" v-model="item.data.rate" /></span>
+              <span v-for="(rate, index) in loadRate" :key="index">
+                <span v-if="sid === rate.sid && item.uid === rate.uid"><input type="number" v-model="rate.rate" /></span>
+              </span>
             </td>
             <!--            <td><button class="each">서적별 설정</button></td>-->
           </tr>
@@ -40,7 +42,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { db } from "@/utils/db";
-import { collection, query, getDocs, where, writeBatch, doc, limit, updateDoc } from "firebase/firestore";
+import { collection, query, getDocs, where, writeBatch, doc } from "firebase/firestore";
 import { getCookie } from "@/utils/cookie";
 import TableSkeleton from "@/skeletons/TableSkeleton";
 export default {
@@ -79,9 +81,10 @@ export default {
       //초기화
       this.origin = [];
       this.shops = [];
+      this.loadRate = [];
       try {
         this.$store.commit("common/setSkeleton", true);
-        const first = query(collection(db, "shopInfo"), where("shop", ">=", this.keyword));
+        const first = query(collection(db, "shopInfo"));
         const documentSnapshots = await getDocs(first);
         documentSnapshots.forEach(doc => {
           this.origin.push({ uid: doc.id, data: doc.data() });
@@ -89,19 +92,15 @@ export default {
           this.shopsUids.push(doc.id);
         });
         //서점별 공급률 불러오기
-        const second = query(collection(db, "booksData"), where("sid", "==", this.sid), limit(1));
-        const documentSnapshotsSecond = await getDocs(second);
-        documentSnapshotsSecond.forEach(doc => {
-          this.loadRate = doc.data().shop_rate;
-        });
-        //불러온 공급률 매치
-        this.shops.forEach((ele, index) => {
-          this.loadRate.forEach(elm => {
-            if (ele.uid === elm.uid) {
-              this.shops[index].data.rate = elm.rate;
-              this.origin[index].data.rate = elm.rate;
-            }
-          });
+        const _this = this;
+        this.origin.forEach(ele => {
+          if (ele.data.shopRate.length === 0) {
+            this.loadRate.push({ sid: _this.sid, rate: null, uid: ele.uid });
+          } else {
+            ele.data.shopRate.forEach(elm => {
+              this.loadRate.push({ ...elm, uid: ele.uid });
+            });
+          }
         });
         this.$store.commit("common/setSkeleton", false);
       } catch (e) {
@@ -112,32 +111,36 @@ export default {
     async shopRateSave() {
       try {
         this.$store.commit("common/setLoading", true);
-        //일괄 업데이트
-        const updateArr = [];
-        this.shops.forEach(ele => {
-          if (ele.data.rate !== "" && ele.data.rate !== undefined) {
-            updateArr.push({ uid: ele.uid, rate: ele.data.rate });
-          }
-        });
+        // //일괄 업데이트
+        // const updateArr = [];
+        // this.shops.forEach(ele => {
+        //   if (ele.data.rate !== "" && ele.data.rate !== undefined) {
+        //     updateArr.push({ uid: ele.uid, rate: ele.data.rate });
+        //   }
+        // });
         const batch = writeBatch(db);
-        //서점별 공급률 변경
-        await this.sids.forEach(id => {
-          const docRef = doc(db, "booksData", id);
-          batch.update(docRef, {
-            shop_rate: updateArr,
+        this.origin.forEach(ele => {
+          const maintain = ele.data.shopRate.filter(elm => {
+            return elm.sid !== this.sid;
+          });
+          const shopRef = doc(db, "shopInfo", ele.uid);
+          this.loadRate.forEach(elm => {
+            if (elm.uid === ele.uid) {
+              batch.set(shopRef, { ...ele.data, shopRate: [...maintain, { sid: this.sid, rate: elm.rate }] });
+            }
           });
         });
-        //장바구니 공급률 변경
-        const promises = this.shopsUids.map(async id => {
-          const querySnapshot = await getDocs(collection(db, `cart-${id}`));
-          querySnapshot.forEach(item => {
-            const docRef = doc(db, `cart-${id}`, item.id);
-            batch.update(docRef, {
-              shop_rate: updateArr,
-            });
-          });
-        });
-        await Promise.all(promises);
+        // //장바구니 공급률 변경
+        // const promises = this.shopsUids.map(async id => {
+        //   const querySnapshot = await getDocs(collection(db, `cart-${id}`));
+        //   querySnapshot.forEach(item => {
+        //     const docRef = doc(db, `cart-${id}`, item.id);
+        //     batch.update(docRef, {
+        //       shop_rate: updateArr,
+        //     });
+        //   });
+        // });
+        // await Promise.all(promises);
         await batch.commit();
         await this.load();
         alert("저장되었습니다.");
