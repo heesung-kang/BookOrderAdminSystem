@@ -32,21 +32,13 @@
         <div class="d-flex price-info">
           <div class="normal-price"><span v-if="mobile">정가</span> {{ book.data.price?.toLocaleString() }}원</div>
           <!-- 상점별 공급률 설정 -->
-          <div v-if="book.data.shop_rate.length > 0 && book.data.shop_rate.some(ele => ele.uid === uid)">
-            <span v-for="rate in book.data.shop_rate" :key="rate.uid">
-              <span v-if="uid === rate.uid"><span v-if="mobile">공급률</span> {{ rate.rate }}%</span>
-            </span>
-          </div>
+          <div v-if="book.data.shopRate !== undefined"><span v-if="mobile">공급률</span> {{ book.data.shopRate }}%</div>
           <!-- 상점별 공급률 미설정 -->
-          <div v-if="book.data.shop_rate.length === 0 || (book.data.shop_rate.length > 0 && !book.data.shop_rate.some(ele => ele.uid === uid))">
-            <span v-if="mobile">공급률</span> {{ book.data.supply_rate }}%
-          </div>
+          <div v-else><span v-if="mobile">공급률</span> {{ book.data.supply_rate }}%</div>
         </div>
         <!-- 상점별 공급률 있을 경우 -->
-        <div class="final-price" v-if="book.data.shop_rate.length > 0 && book.data.shop_rate.some(ele => ele.uid === uid)">
-          <span v-for="rate in book.data.shop_rate" :key="rate.uid">
-            <span v-if="uid === rate.uid"><span v-if="mobile">공급가</span>{{ ((book.data.price * rate.rate) / 100).toLocaleString() }}원</span>
-          </span>
+        <div class="final-price" v-if="book.data.shopRate !== undefined">
+          <span v-if="mobile">공급가</span>{{ ((book.data.price * book.data.shopRate) / 100).toLocaleString() }}원
         </div>
         <!-- 상점별 공급률 없을 경우 -->
         <div class="final-price" v-else>
@@ -134,16 +126,8 @@ export default {
       let price = 0;
       this.books.forEach(ele => {
         //상점별 공급률 설정
-        if (ele.data.shop_rate !== "" && ele.data.shop_rate.length > 0) {
-          if (ele.data.shop_rate.some(elm => elm.uid === this.uid)) {
-            let rate = "";
-            ele.data.shop_rate.forEach(v => {
-              if (v.uid === this.uid) {
-                rate = v.rate;
-              }
-            });
-            price += (ele.data.price * Number(rate) * ele.data.count) / 100;
-          }
+        if (ele.data.shopRate !== undefined) {
+          price += (ele.data.price * Number(ele.data.shopRate) * ele.data.count) / 100;
         } else {
           //상점별 공급률 미설정
           price += (ele.data.price * ele.data.supply_rate * ele.data.count) / 100;
