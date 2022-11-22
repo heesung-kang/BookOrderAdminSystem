@@ -28,7 +28,7 @@ import AddressModal from "@/components/modal/ModalAddress";
 import { getPopupOpt } from "@/utils/modal";
 import { mapGetters } from "vuex";
 import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
-import { doc, getDoc, setDoc, serverTimestamp, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, serverTimestamp, updateDoc, collection, query, getDocs, writeBatch } from "firebase/firestore";
 import { app, db } from "@/utils/db";
 const auth = getAuth(app);
 
@@ -46,6 +46,7 @@ export default {
       zip: "",
       address1: "",
       address2: "",
+      shops: [],
     };
   },
   computed: {
@@ -53,8 +54,22 @@ export default {
   },
   async created() {
     //sid 자동 배정
-    const docSnap = await getDoc(doc(db, "sid", "counting"));
-    this.sid = docSnap.data().count + 1;
+    try {
+      const docSnap = await getDoc(doc(db, "sid", "counting"));
+      this.sid = docSnap.data().count + 1;
+    } catch (e) {
+      console.log(e);
+    }
+    //shopInfo 로드
+    try {
+      const q = query(collection(db, "shopInfo"));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(doc => {
+        this.shops.push({ id: doc.id, data: doc.data() });
+      });
+    } catch (e) {
+      console.log(e);
+    }
   },
   methods: {
     userRegistration() {
@@ -135,13 +150,24 @@ export default {
               supplyRate: "100",
               timestamp: serverTimestamp(),
             });
-            this.$store.commit("common/setLoading", false);
-            alert("정상 가입 되셨습니다.");
-            this.$router.push("/Login");
             //sid count 업데이트
             await updateDoc(doc(db, "sid", "counting"), {
               count: this.sid,
             });
+            //서점 정보 업데이트
+            const batch = writeBatch(db);
+            try {
+              await this.shops.forEach(ele => {
+                const docRef = doc(db, "shopInfo", ele.id);
+                batch.update(docRef, { shopRate: [...ele.data.shopRate, { sid: this.sid, rate: "" }] });
+              });
+              await batch.commit();
+            } catch (e) {
+              console.log(e);
+            }
+            this.$store.commit("common/setLoading", false);
+            alert("정상 가입 되셨습니다.");
+            this.$router.push("/Login");
           })
           .catch(error => {
             console.log(error);

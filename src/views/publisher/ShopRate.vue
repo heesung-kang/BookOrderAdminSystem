@@ -21,16 +21,16 @@
             <td>{{ item.data.shop }}</td>
             <td>{{ item.data.email }}</td>
             <td>
-              <span v-for="(rate, index) in loadRate" :key="index">
-                <span v-if="sid === rate.sid && item.uid === rate.uid"><input type="number" v-model="rate.rate" /></span>
+              <span v-for="(rate, index) in item.data.shopRate" :key="index">
+                <span v-if="rate.sid === sid"><input type="number" v-model="rate.rate" /></span>
               </span>
             </td>
-            <!--            <td><button class="each">서적별 설정</button></td>-->
+            <!--          <td><button class="each">서적별 설정</button></td>-->
           </tr>
         </tbody>
         <tfoot v-if="shops.length === 0">
           <tr>
-            <td colspan="4">서점 리스트가 없습니다.</td>
+            <td colspan="3">서점 리스트가 없습니다.</td>
           </tr>
         </tfoot>
       </table>
@@ -55,8 +55,7 @@ export default {
       keyword: "",
       sid: "",
       sids: [],
-      loadRate: [], //불러온 공급률
-      shopsUids: [],
+      oldRate: [],
     };
   },
   computed: {
@@ -89,18 +88,6 @@ export default {
         documentSnapshots.forEach(doc => {
           this.origin.push({ uid: doc.id, data: doc.data() });
           this.shops.push({ uid: doc.id, data: doc.data() });
-          this.shopsUids.push(doc.id);
-        });
-        //서점별 공급률 불러오기
-        const _this = this;
-        this.origin.forEach(ele => {
-          if (ele.data.shopRate.length === 0) {
-            this.loadRate.push({ sid: _this.sid, rate: null, uid: ele.uid });
-          } else {
-            ele.data.shopRate.forEach(elm => {
-              this.loadRate.push({ ...elm, uid: ele.uid });
-            });
-          }
         });
         this.$store.commit("common/setSkeleton", false);
       } catch (e) {
@@ -111,36 +98,18 @@ export default {
     async shopRateSave() {
       try {
         this.$store.commit("common/setLoading", true);
-        // //일괄 업데이트
-        // const updateArr = [];
-        // this.shops.forEach(ele => {
-        //   if (ele.data.rate !== "" && ele.data.rate !== undefined) {
-        //     updateArr.push({ uid: ele.uid, rate: ele.data.rate });
-        //   }
-        // });
         const batch = writeBatch(db);
-        this.origin.forEach(ele => {
+        this.shops.forEach(ele => {
           const maintain = ele.data.shopRate.filter(elm => {
-            return elm.sid !== this.sid;
+            return elm.sid !== this.sid; //변경값 이외의 기존 설정값
           });
           const shopRef = doc(db, "shopInfo", ele.uid);
-          this.loadRate.forEach(elm => {
-            if (elm.uid === ele.uid) {
+          ele.data.shopRate.forEach(elm => {
+            if (elm.sid === this.sid) {
               batch.set(shopRef, { ...ele.data, shopRate: [...maintain, { sid: this.sid, rate: elm.rate }] });
             }
           });
         });
-        // //장바구니 공급률 변경
-        // const promises = this.shopsUids.map(async id => {
-        //   const querySnapshot = await getDocs(collection(db, `cart-${id}`));
-        //   querySnapshot.forEach(item => {
-        //     const docRef = doc(db, `cart-${id}`, item.id);
-        //     batch.update(docRef, {
-        //       shop_rate: updateArr,
-        //     });
-        //   });
-        // });
-        // await Promise.all(promises);
         await batch.commit();
         await this.load();
         alert("저장되었습니다.");
