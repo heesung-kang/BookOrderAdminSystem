@@ -157,13 +157,22 @@ export default {
           this.oldRate = ele.data.bookRate;
         }
       });
+      const newRate = [];
       this.booksList.forEach(ele => {
-        this.oldRate.push({ uid: id, data: { isbn: ele.data.isbn, rate: ele.rate } });
+        newRate.push({ uid: id, data: { isbn: ele.data.isbn, rate: ele.rate } });
       });
+      const filterRate = this.oldRate.filter(ele => {
+        newRate.forEach(elm => {
+          if (ele.data.isbn !== elm.data.isbn) {
+            return ele;
+          }
+        });
+      });
+      const finalRate = newRate.concat(filterRate);
       this.$store.commit("common/setLoading", true);
       try {
         await updateDoc(doc(db, "shopInfo", id), {
-          bookRate: this.oldRate,
+          bookRate: finalRate,
         });
         await this.load();
         this.$store.commit("common/setLoading", false);
