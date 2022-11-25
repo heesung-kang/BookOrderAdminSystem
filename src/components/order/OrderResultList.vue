@@ -306,6 +306,9 @@ export default {
       div {
         font-size: 1.6rem;
       }
+      .isbn {
+        text-align: left;
+      }
       .info-wrap {
         width: 100% !important;
         align-items: flex-start !important;
