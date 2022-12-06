@@ -8,6 +8,7 @@
           <li :class="{ active: activeStatus === 1 }"><router-link to="/OrderList">주문 목록 보기</router-link></li>
           <li :class="{ active: activeStatus === 2 }"><router-link to="/DeliveryList">결제 내역 보기 및 출고 지시</router-link></li>
           <li :class="{ active: activeStatus === 3 }"><router-link to="/PublisherInfo">출판사 정보</router-link></li>
+          <li :class="{ active: activeStatus === 4 }"><router-link to="/BookManagement">도서 관리</router-link></li>
         </ul>
       </nav>
     </aside>
@@ -68,6 +69,9 @@ export default {
           break;
         case "PublisherInfo":
           this.activeStatus = 3;
+          break;
+        case "BookManagement":
+          this.activeStatus = 4;
           break;
       }
     },

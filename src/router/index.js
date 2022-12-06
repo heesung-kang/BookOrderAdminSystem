@@ -87,6 +87,15 @@ const router = new VueRouter({
         contents: () => import("@/views/publisher/ShopRate.vue"),
       },
     },
+    {
+      path: "/BookManagement",
+      name: "BookManagement",
+      components: {
+        lnb,
+        footer,
+        contents: () => import("@/views/books/BookManagement.vue"),
+      },
+    },
     //404
     {
       path: "*",

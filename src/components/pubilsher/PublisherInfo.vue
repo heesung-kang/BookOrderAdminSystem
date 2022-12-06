@@ -121,7 +121,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { getCookie } from "@/utils/cookie";
-import { doc, getDoc, updateDoc, collection, query, where, limit, getDocs } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db, app } from "@/utils/db";
 import AddressModal from "@/components/modal/ModalAddress";
 import { getPopupOpt } from "@/utils/modal";
@@ -152,14 +152,6 @@ export default {
     this.uid = infos.uid;
     this.sid = infos.info.sid;
     this.load();
-  },
-  async mounted() {
-    //출판사 보유 서적 id 불러오기
-    // const first = query(collection(db, "booksData"), where("sid", "==", this.sid));
-    // const documentSnapshots = await getDocs(first);
-    // documentSnapshots.forEach(doc => {
-    //   this.sids.push(doc.id);
-    // });
   },
   methods: {
     statusChange() {
