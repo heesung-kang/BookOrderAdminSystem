@@ -117,6 +117,7 @@ export default {
               })
               .catch(error => {
                 alert(error.message);
+                this.$store.commit("common/setLoading", false);
               });
           })
           .catch(error => {

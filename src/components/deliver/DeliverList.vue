@@ -56,8 +56,9 @@
     <!-- //총 합계 --->
     <!-- 배본 설정 -->
     <div class="d-flex align-center mt10 justify-end" v-if="!skeletonLoading && books[0].data.shop_order_status === 3">
-      <span class="mr10">배본 설정: </span>
-      <Selects :itemList="itemList" @change="changeSelect" />
+      <span style="display: flex; align-items: center" v-if="itemList.length > 0"
+        ><span class="mr10">배본 설정: </span><Selects :itemList="itemList" @change="changeSelect"
+      /></span>
       <button class="primary ml10" @click="order">출고지시</button>
     </div>
     <!-- //배본 설정 -->
@@ -71,16 +72,18 @@ import BookListSkeleton from "@/skeletons/BookListSkeleton";
 import BookListMobileSkeleton from "@/skeletons/BookListMobileSkeleton";
 import { collection, getDocs, query, where, writeBatch, serverTimestamp, doc, getDoc } from "firebase/firestore";
 import { db } from "@/utils/db";
+import { getCookie } from "@/utils/cookie";
 export default {
   components: { Selects, BookListSkeleton, BookListMobileSkeleton },
   props: ["id", "orderRealTimeId", "uid"],
   data() {
     return {
       select: "",
-      itemList: [{ item: "배본사 선택", value: "" }],
+      itemList: [],
       books: [],
       address1: "",
       address2: "",
+      puid: "",
     };
   },
   computed: {
@@ -101,6 +104,8 @@ export default {
     },
   },
   async created() {
+    const infos = getCookie("userInfo");
+    this.puid = infos.uid;
     await this.load();
     await this.distribution();
     await this.getAddress();
@@ -136,11 +141,14 @@ export default {
     },
     //배본사 select
     async distribution() {
-      const first = query(collection(db, "distribution"));
+      const first = query(collection(db, "distribution"), where("uid", "==", this.puid));
       const documentSnapshots = await getDocs(first);
-      await documentSnapshots.forEach(doc => {
-        this.itemList.push({ value: doc.data().companyName, item: doc.data().companyName });
-      });
+      if (documentSnapshots.docs.length > 0) {
+        this.itemList = [{ item: "배본사 선택", value: "" }];
+        await documentSnapshots.forEach(doc => {
+          this.itemList.push({ value: doc.data().companyName, item: doc.data().companyName });
+        });
+      }
     },
     changeSelect(data) {
       this.select = data;
