@@ -187,10 +187,7 @@ export default {
     //엑셀출력
     exportExcel() {
       const excelData = [];
-      console.log("111");
       this.books.forEach(ele => {
-        console.log(ele);
-        console.log((ele.data.price * Number(ele.data.supply_rate)) / 100);
         excelData.push({
           shop_name: ele.data.shop_name,
           address: `${this.address1} ${this.address2}`,
