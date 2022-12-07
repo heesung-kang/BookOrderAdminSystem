@@ -5,7 +5,7 @@
       <div class="v-application">
         <v-progress-circular :size="70" :width="7" color="amber" indeterminate class="spinner" v-if="loading"></v-progress-circular>
       </div>
-      <div>
+      <div class="overflow">
         <ul>
           <li v-for="book in booksList" :key="book.data.isbn" class="d-flex book-list">
             <div class="wrap">
@@ -140,5 +140,9 @@ input {
   margin-top: 20px;
   display: flex;
   justify-content: center;
+}
+.overflow {
+  max-height: 300px;
+  overflow: auto;
 }
 </style>
