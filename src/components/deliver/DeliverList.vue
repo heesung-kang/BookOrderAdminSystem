@@ -63,6 +63,9 @@
       <button class="primary ml10 order" @click="order" :disabled="itemList.length === 0">출고지시</button>
     </div>
     <!-- //배본 설정 -->
+    <div class="d-flex align-center mt10 justify-end" v-if="!skeletonLoading && books[0].data.shop_order_status === 4">
+      <button class="primary ml10 order" @click="exportExcel">엑셀출력</button>
+    </div>
   </section>
 </template>
 
@@ -74,6 +77,7 @@ import BookListMobileSkeleton from "@/skeletons/BookListMobileSkeleton";
 import { collection, getDocs, query, where, writeBatch, serverTimestamp, doc, getDoc } from "firebase/firestore";
 import { db } from "@/utils/db";
 import { getCookie } from "@/utils/cookie";
+import XLSX from "sheetjs-style";
 export default {
   components: { Selects, BookListSkeleton, BookListMobileSkeleton },
   props: ["id", "orderRealTimeId", "uid"],
@@ -179,6 +183,85 @@ export default {
         console.log(e);
       }
       this.$store.commit("common/setLoading", false);
+    },
+    //엑셀출력
+    exportExcel() {
+      const excelData = [];
+      console.log("111");
+      this.books.forEach(ele => {
+        console.log(ele);
+        console.log((ele.data.price * Number(ele.data.supply_rate)) / 100);
+        excelData.push({
+          shop_name: ele.data.shop_name,
+          address: `${this.address1} ${this.address2}`,
+          subject: ele.data.subject,
+          author: ele.data.author,
+          isbn: ele.data.isbn,
+          price: (ele.data.price * Number(ele.data.supply_rate)) / 100,
+          reply_count: ele.data.reply_count,
+          distribution: ele.data.distribution,
+          release_time: this.$date(ele.data.release_time.toDate()).format("YYYY-MM-DD HH:mm:ss"),
+        });
+      });
+      const booksWS = XLSX.utils.json_to_sheet(excelData);
+      const wb = XLSX.utils.book_new(); // make Workbook of Excel
+      //셀 제목 변경
+      booksWS["A1"].v = "서점";
+      booksWS["B1"].v = "배송지";
+      booksWS["C1"].v = "제목";
+      booksWS["D1"].v = "저자";
+      booksWS["E1"].v = "isbn";
+      booksWS["F1"].v = "출고가";
+      booksWS["G1"].v = "수량";
+      booksWS["H1"].v = "배본사";
+      booksWS["I1"].v = "출고지시일";
+      booksWS["A1"].s = {
+        fill: {
+          fgColor: { rgb: "d9ead3" },
+        },
+      };
+      booksWS["B1"].s = {
+        fill: {
+          fgColor: { rgb: "d9ead3" },
+        },
+      };
+      booksWS["C1"].s = {
+        fill: {
+          fgColor: { rgb: "d9ead3" },
+        },
+      };
+      booksWS["D1"].s = {
+        fill: {
+          fgColor: { rgb: "d9ead3" },
+        },
+      };
+      booksWS["E1"].s = {
+        fill: {
+          fgColor: { rgb: "d9ead3" },
+        },
+      };
+      booksWS["F1"].s = {
+        fill: {
+          fgColor: { rgb: "d9ead3" },
+        },
+      };
+      booksWS["G1"].s = {
+        fill: {
+          fgColor: { rgb: "d9ead3" },
+        },
+      };
+      booksWS["H1"].s = {
+        fill: {
+          fgColor: { rgb: "d9ead3" },
+        },
+      };
+      booksWS["I1"].s = {
+        fill: {
+          fgColor: { rgb: "d9ead3" },
+        },
+      };
+      XLSX.utils.book_append_sheet(wb, booksWS, "books"); // sheetAName is name of Worksheet
+      XLSX.writeFile(wb, "출고리스트.xlsx");
     },
   },
 };
