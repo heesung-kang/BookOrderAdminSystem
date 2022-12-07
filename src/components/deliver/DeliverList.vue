@@ -59,7 +59,8 @@
       <span style="display: flex; align-items: center" v-if="itemList.length > 0"
         ><span class="mr10">배본 설정: </span><Selects :itemList="itemList" @change="changeSelect"
       /></span>
-      <button class="primary ml10" @click="order">출고지시</button>
+      <span v-else>배본사를 설정하세요</span>
+      <button class="primary ml10 order" @click="order" :disabled="itemList.length === 0">출고지시</button>
     </div>
     <!-- //배본 설정 -->
   </section>
@@ -288,6 +289,11 @@ export default {
   }
   &:nth-child(6) {
     width: 60px;
+  }
+}
+.order {
+  &:disabled {
+    background-color: #d9d9d9 !important;
   }
 }
 @include mobile {
