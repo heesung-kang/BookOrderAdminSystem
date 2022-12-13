@@ -34,6 +34,7 @@
       </table>
       <div class="save mt20"><button class="primary" @click="handleSave">저장</button></div>
     </section>
+    <Toast :status="status" :message="message" />
   </section>
 </template>
 
@@ -44,10 +45,11 @@ import { collection, doc, getDocs, query, writeBatch } from "firebase/firestore"
 import { getCookie } from "@/utils/cookie";
 import TableSkeleton from "@/skeletons/TableSkeleton";
 import SelectPayType from "@/components/form/SelectPayType";
+import Toast from "@/components/common/Toast";
 
 export default {
   name: "PayType",
-  components: { SelectPayType, TableSkeleton },
+  components: { SelectPayType, TableSkeleton, Toast },
   data() {
     return {
       origin: [],
@@ -59,6 +61,8 @@ export default {
         { item: "일반결제", value: 0 },
         { item: "월결제", value: 1 },
       ],
+      message: "",
+      status: false,
     };
   },
   computed: {
@@ -98,7 +102,8 @@ export default {
         });
         await batch.commit();
         await this.load();
-        alert("저장되었습니다.");
+        this.status = !this.status;
+        this.message = "저장되었습니다";
         this.$store.commit("common/setLoading", false);
       } catch (e) {
         this.$store.commit("common/setLoading", false);

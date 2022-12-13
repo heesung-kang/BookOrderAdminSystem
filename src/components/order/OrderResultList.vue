@@ -81,6 +81,7 @@
       </div>
     </section>
     <!-- //총 합계 --->
+    <Toast :status="status" :message="message" />
   </section>
 </template>
 
@@ -93,14 +94,17 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/utils/db";
 import BookListSkeleton from "@/skeletons/BookListSkeleton";
 import BookListMobileSkeleton from "@/skeletons/BookListMobileSkeleton";
+import Toast from "@/components/common/Toast";
 export default {
-  components: { SelectsReply, BookListSkeleton, BookListMobileSkeleton },
+  components: { SelectsReply, BookListSkeleton, BookListMobileSkeleton, Toast },
   props: ["id", "orderTimeId", "uid"],
   data() {
     return {
       selected: [],
       books: [],
       error: 0,
+      message: "",
+      status: false,
     };
   },
   computed: {
@@ -155,7 +159,8 @@ export default {
           ? this.$modal.show(ModalMemo, { books: this.books, update: this.load }, getPopupOpt("ModalMemo", "95%", "auto", false))
           : this.$modal.show(ModalMemo, { books: this.books, update: this.load }, getPopupOpt("ModalMemo", "500px", "auto", false));
       } else {
-        alert("공급이 주문보다 많습니다.");
+        this.status = !this.status;
+        this.message = "공급이 주문보다 많습니다.";
       }
     },
     //회신상태 변경

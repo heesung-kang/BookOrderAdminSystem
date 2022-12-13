@@ -20,6 +20,7 @@
       <div class="mt2"><input class="basic" v-model="address2" placeholder="나머지주소" type="text" /></div>
       <div class="btn-wrap"><button @click="userRegistration">가입</button><router-link to="/login" class="login">로그인</router-link></div>
     </div>
+    <Toast :status="status" :message="message" />
   </div>
 </template>
 
@@ -31,9 +32,11 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithEmail
 import { doc, getDoc, setDoc, serverTimestamp, updateDoc, collection, query, getDocs, writeBatch } from "firebase/firestore";
 import { app, db } from "@/utils/db";
 const auth = getAuth(app);
+import Toast from "@/components/common/Toast";
 
 export default {
   name: "SignUp",
+  components: { Toast },
   data() {
     return {
       email: "",
@@ -47,6 +50,8 @@ export default {
       address1: "",
       address2: "",
       shops: [],
+      message: "",
+      status: false,
     };
   },
   computed: {
@@ -74,35 +79,43 @@ export default {
   methods: {
     userRegistration() {
       if (this.publisher === "") {
-        alert("출판사명 입력해주세요.");
+        this.status = !this.status;
+        this.message = "출판사명 입력해주세요";
         return;
       }
       if (this.email === "") {
-        alert("이메일을 입력해주세요.");
+        this.status = !this.status;
+        this.message = "이메일을 입력해주세요";
         return;
       }
       if (this.password === "") {
-        alert("비밀번호를 입력해주세요.");
+        this.status = !this.status;
+        this.message = "비밀번호를 입력해주세요";
         return;
       }
       if (this.name === "") {
-        alert("대표자명을 입력해주세요.");
+        this.status = !this.status;
+        this.message = "대표자명을 입력해주세요";
         return;
       }
       if (this.tel === "") {
-        alert("대표연락처를 입력해주세요.");
+        this.status = !this.status;
+        this.message = "대표연락처를 입력해주세요";
         return;
       }
       if (this.cnNum === "") {
-        alert("사업자등록 번호를 입력해주세요.");
+        this.status = !this.status;
+        this.message = "사업자등록 번호를 입력해주세요";
         return;
       }
       if (this.address1 === "") {
-        alert("주소를 입력해주세요.");
+        this.status = !this.status;
+        this.message = "주소를 입력해주세요";
         return;
       }
       if (this.address2 === "") {
-        alert("주소를 입력해주세요.");
+        this.status = !this.status;
+        this.message = "주소를 입력해주세요";
         return;
       }
       try {
@@ -116,12 +129,14 @@ export default {
                 this.addInfo();
               })
               .catch(error => {
-                alert(error.message);
+                this.status = !this.status;
+                this.message = error.message;
                 this.$store.commit("common/setLoading", false);
               });
           })
           .catch(error => {
-            alert(error.message);
+            this.status = !this.status;
+            this.message = error.message;
             this.$store.commit("common/setLoading", false);
           });
       } catch (e) {
@@ -167,7 +182,8 @@ export default {
               console.log(e);
             }
             this.$store.commit("common/setLoading", false);
-            alert("정상 가입 되셨습니다.");
+            this.status = !this.status;
+            this.message = "정상 가입 되셨습니다.";
             this.$router.push("/Login");
           })
           .catch(error => {

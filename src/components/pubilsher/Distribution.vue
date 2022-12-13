@@ -58,6 +58,7 @@
         </tr>
       </tbody>
     </table>
+    <Toast :status="status" :message="message" />
   </section>
 </template>
 
@@ -65,8 +66,10 @@
 import { getCookie } from "@/utils/cookie";
 import { collection, addDoc, getDocs, query, where, updateDoc, doc, deleteDoc } from "firebase/firestore";
 import { db } from "@/utils/db";
+import Toast from "@/components/common/Toast";
 export default {
   name: "Distribution",
+  components: { Toast },
   data() {
     return {
       modify: "",
@@ -78,6 +81,8 @@ export default {
       tel: "",
       uid: "",
       distribution: [],
+      message: "",
+      status: false,
     };
   },
   created() {
@@ -103,15 +108,18 @@ export default {
     },
     async add() {
       if (this.companyName === "") {
-        alert("배본사명을 입력해주세요");
+        this.status = !this.status;
+        this.message = "배본사명을 입력해주세요";
         return;
       }
       if (this.name === "") {
-        alert("담당자를 입력해주세요");
+        this.status = !this.status;
+        this.message = "담당자를 입력해주세요";
         return;
       }
       if (this.tel === "") {
-        alert("연락처를 입력해주세요");
+        this.status = !this.status;
+        this.message = "연락처를 입력해주세요";
         return;
       }
       try {

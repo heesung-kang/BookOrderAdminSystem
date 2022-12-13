@@ -66,6 +66,7 @@
     <div class="d-flex align-center mt10 justify-end" v-if="!skeletonLoading && books[0].data.shop_order_status === 4">
       <button class="primary ml10 order" @click="exportExcel">엑셀출력</button>
     </div>
+    <Toast :status="status" :message="message" />
   </section>
 </template>
 
@@ -78,8 +79,9 @@ import { collection, getDocs, query, where, writeBatch, serverTimestamp, doc, ge
 import { db } from "@/utils/db";
 import { getCookie } from "@/utils/cookie";
 import XLSX from "sheetjs-style";
+import Toast from "@/components/common/Toast";
 export default {
-  components: { Selects, BookListSkeleton, BookListMobileSkeleton },
+  components: { Selects, BookListSkeleton, BookListMobileSkeleton, Toast },
   props: ["id", "orderRealTimeId", "uid"],
   data() {
     return {
@@ -89,6 +91,8 @@ export default {
       address1: "",
       address2: "",
       puid: "",
+      message: "",
+      status: false,
     };
   },
   computed: {
@@ -161,7 +165,8 @@ export default {
     //출고지시
     async order() {
       if (this.select === "") {
-        alert("배본사를 선택해주세요.");
+        this.status = !this.status;
+        this.message = "배본사를 선택해주세요.";
         return;
       }
       const batch = writeBatch(db);

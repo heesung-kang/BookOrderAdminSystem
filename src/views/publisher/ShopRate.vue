@@ -36,6 +36,7 @@
       </table>
       <div class="save mt20"><button class="primary" @click="shopRateSave()">저장</button></div>
     </section>
+    <Toast :status="status" :message="message" />
   </section>
 </template>
 
@@ -47,9 +48,10 @@ import { getCookie } from "@/utils/cookie";
 import TableSkeleton from "@/skeletons/TableSkeleton";
 import ModalBookRate from "@/components/modal/ModalBookRate.vue";
 import { getPopupOpt } from "@/utils/modal";
+import Toast from "@/components/common/Toast";
 export default {
   name: "PublisherList",
-  components: { TableSkeleton },
+  components: { TableSkeleton, Toast },
   data() {
     return {
       origin: [],
@@ -58,6 +60,8 @@ export default {
       sid: "",
       booksList: [],
       oldRate: [],
+      message: "",
+      status: false,
     };
   },
   computed: {
@@ -112,7 +116,8 @@ export default {
         });
         await batch.commit();
         await this.load();
-        alert("저장되었습니다.");
+        this.status = !this.status;
+        this.message = "저장되었습니다";
         this.$store.commit("common/setLoading", false);
       } catch (e) {
         this.$store.commit("common/setLoading", false);
