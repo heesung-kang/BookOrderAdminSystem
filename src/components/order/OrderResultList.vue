@@ -24,7 +24,7 @@
       >
         <div class="d-flex align-center info-wrap">
           <div class="book-info">
-            <h3>{{ book.data.subject }}</h3>
+            <h3 class="book-name">{{ book.data.subject }}</h3>
             <div class="author">{{ book.data.author }}</div>
           </div>
         </div>
@@ -127,6 +127,11 @@ export default {
   created() {
     this.load();
   },
+  mounted() {
+    window.onresize = () => {
+      this.setSize();
+    };
+  },
   methods: {
     async load() {
       try {
@@ -142,6 +147,9 @@ export default {
         await documentSnapshots.forEach(doc => {
           this.books.push({ id: doc.id, data: doc.data() });
         });
+        setTimeout(() => {
+          this.setSize();
+        }, 500);
       } catch (e) {
         console.log(e);
       }
@@ -179,6 +187,27 @@ export default {
           break;
       }
     },
+    setSize() {
+      if (this.mobile) {
+        this.listWidth = document.querySelector(".body").clientWidth;
+        this.titleMaxWidth = this.listWidth;
+        setTimeout(() => {
+          const select = document.querySelectorAll(".book-name");
+          select.forEach(ele => {
+            ele.style.maxWidth = `${this.titleMaxWidth}px`;
+          });
+        }, 500);
+      } else {
+        this.listWidth = document.querySelector(".body").clientWidth;
+        this.titleMaxWidth = this.listWidth - 630;
+        setTimeout(() => {
+          const select = document.querySelectorAll(".book-name");
+          select.forEach(ele => {
+            ele.style.maxWidth = `${this.titleMaxWidth}px`;
+          });
+        }, 500);
+      }
+    },
   },
 };
 </script>
@@ -209,6 +238,12 @@ export default {
     background-color: #fff;
     padding: 5px 13px;
     margin-bottom: 6px;
+    .book-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: left !important;
+    }
     .final-price {
       @include NotoSans(1.4, 700, #000);
     }
@@ -217,11 +252,11 @@ export default {
       @extend .size;
       .book-info {
         h3 {
-          @include NotoSans(1.6, 500, #000);
+          @include NotoSans(1.5, 500, #000);
         }
         .author {
           text-align: left;
-          @include NotoSans(1.4, 400, #000);
+          @include NotoSans(1.4, 400, #888);
         }
       }
       .reply-count {
@@ -249,6 +284,12 @@ export default {
         font-weight: 700 !important;
       }
     }
+    .isbn {
+      color: #888;
+    }
+    .normal-price {
+      color: #888;
+    }
   }
 }
 .total-wrap {
@@ -270,7 +311,7 @@ export default {
 }
 .size {
   &:nth-child(1) {
-    width: calc(100% - 620px);
+    width: calc(100% - 608px);
   }
   &:nth-child(2) {
     width: 120px;
@@ -299,7 +340,7 @@ export default {
     width: 80px;
   }
   &:nth-child(7) {
-    width: 120px;
+    width: 108px;
   }
 }
 @include mobile {

@@ -67,5 +67,8 @@ textarea {
 .btn-wrap {
   display: flex;
   justify-content: flex-end;
+  button {
+    font-weight: 500 !important;
+  }
 }
 </style>

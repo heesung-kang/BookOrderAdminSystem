@@ -50,7 +50,7 @@ export default {
   .v-select__selections {
     padding: 0 !important;
     .v-select__selection {
-      @include NotoSans(1.6, 500, #000);
+      @include NotoSans(1.3, 500, #000);
     }
   }
   .v-text-field__details {

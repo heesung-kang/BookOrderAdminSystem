@@ -21,7 +21,10 @@
       <li class="d-flex align-center" v-for="(book, index) in books" :key="index">
         <div class="d-flex align-center info-wrap">
           <div class="book-info">
-            <h3>{{ book.data.subject }}</h3>
+            <h3 class="book-name" @mouseover="tooltipToggle(true)" @mouseout="tooltipToggle(false)">
+              {{ book.data.subject }}
+            </h3>
+            <span :class="[{ active: isActive }, 'tooltip']">{{ book.data.subject }}</span>
             <div class="author">{{ book.data.author }}</div>
           </div>
         </div>
@@ -93,6 +96,7 @@ export default {
       puid: "",
       message: "",
       status: false,
+      isActive: false,
     };
   },
   computed: {
@@ -119,6 +123,11 @@ export default {
     await this.distribution();
     await this.getAddress();
   },
+  mounted() {
+    window.onresize = () => {
+      this.setSize();
+    };
+  },
   methods: {
     async load() {
       try {
@@ -135,6 +144,9 @@ export default {
         await documentSnapshots.forEach(doc => {
           this.books.push({ id: doc.id, data: doc.data() });
         });
+        setTimeout(() => {
+          this.setSize();
+        }, 500);
       } catch (e) {
         console.log(e);
       }
@@ -265,6 +277,30 @@ export default {
       XLSX.utils.book_append_sheet(wb, booksWS, "books"); // sheetAName is name of Worksheet
       XLSX.writeFile(wb, "출고리스트.xlsx");
     },
+    setSize() {
+      if (this.mobile) {
+        this.listWidth = document.querySelector(".body").clientWidth;
+        this.titleMaxWidth = this.listWidth;
+        setTimeout(() => {
+          const select = document.querySelectorAll(".book-name");
+          select.forEach(ele => {
+            ele.style.maxWidth = `${this.titleMaxWidth}px`;
+          });
+        }, 500);
+      } else {
+        this.listWidth = document.querySelector(".body").clientWidth;
+        this.titleMaxWidth = this.listWidth - 550;
+        setTimeout(() => {
+          const select = document.querySelectorAll(".book-name");
+          select.forEach(ele => {
+            ele.style.maxWidth = `${this.titleMaxWidth}px`;
+          });
+        }, 500);
+      }
+    },
+    tooltipToggle(status) {
+      this.isActive = status;
+    },
   },
 };
 </script>
@@ -293,7 +329,6 @@ export default {
 .body {
   li {
     background-color: #fff;
-    border: 1px solid #000;
     padding: 5px 13px;
     margin-bottom: 6px;
     .final-price {
@@ -310,8 +345,26 @@ export default {
       text-align: center;
       @extend .size;
       .book-info {
+        position: relative;
         h3 {
-          @include NotoSans(1.6, 500, #000);
+          @include NotoSans(1.5, 500, #000);
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          cursor: pointer;
+        }
+        .tooltip {
+          position: absolute;
+          top: 22px;
+          left: 0;
+          background: #ccc;
+          white-space: nowrap;
+          padding: 3px 15px;
+          border-radius: 20px;
+          display: none;
+          &.active {
+            display: block;
+          }
         }
         .author {
           text-align: left;
