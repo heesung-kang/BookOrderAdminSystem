@@ -110,8 +110,8 @@ export default {
   background-image: url("../../assets/images/bg.jpg");
   z-index: 100;
   .login-box {
-    background: #fff;
-    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 1px;
     padding: 30px;
     width: 400px;
     @include boxshadow(0px, 3px, 6px, 0px, rgba(0, 0, 0, 0.05));
@@ -131,6 +131,7 @@ export default {
     }
     h1 {
       text-align: center;
+      @include NotoSans(2, 700, #fff);
       .icon {
         vertical-align: -6px;
       }
@@ -145,7 +146,7 @@ export default {
     button {
       width: 100%;
       height: 50px;
-      background: #035dba;
+      background: #48c0c1;
       color: #fff;
       border-radius: 5px;
       font-size: 1.8rem;
@@ -155,7 +156,7 @@ export default {
     }
     .flex-between {
       & a {
-        color: rgb(51, 51, 51);
+        color: #fff;
       }
     }
     .error-message {
@@ -165,8 +166,9 @@ export default {
     }
     .signup {
       text-align: right;
+      color: #fff;
       a {
-        color: #333;
+        color: #fff;
       }
     }
   }
