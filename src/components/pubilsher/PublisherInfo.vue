@@ -72,7 +72,11 @@
     <!-- 정산정보 -->
     <div class="d-flex justify-space-between mt50">
       <h3>정산 정보</h3>
-      <div><router-link to="/ShopRate" class="btn-xs">서점별 공급률 설정</router-link></div>
+      <div>
+        <!--        <router-link to="/PayType" class="btn-xs mr10">서점별 결재방식 설정</router-link-->
+        <!--        >-->
+        <router-link to="/ShopRate" class="btn-xs">서점별 공급률 설정</router-link>
+      </div>
     </div>
     <section class="cal-wrap mt5">
       <article>
@@ -115,6 +119,7 @@
       </div>
     </section>
     <!-- //버튼 영역 -->
+    <Toast :status="status" :message="message" />
   </section>
 </template>
 
@@ -126,8 +131,10 @@ import { db, app } from "@/utils/db";
 import AddressModal from "@/components/modal/ModalAddress";
 import { getPopupOpt } from "@/utils/modal";
 import { getAuth, updateEmail } from "firebase/auth";
+import Toast from "@/components/common/Toast";
 export default {
   name: "Distribution",
+  components: { Toast },
   data() {
     return {
       infoModify: false,
@@ -142,6 +149,8 @@ export default {
       supplyRate: "",
       zip: "",
       sids: [],
+      message: "",
+      status: false,
     };
   },
   computed: {
@@ -205,23 +214,28 @@ export default {
     async infoUpdate() {
       //출판사 정보 업데이트
       if (this.infoTemp.publisher === "") {
-        alert("출판사명을 입력해주세요");
+        this.status = !this.status;
+        this.message = "출판사명을 입력해주세요";
         return;
       }
       if (this.infoTemp.name === "") {
-        alert("대표자명을 입력해주세요");
+        this.status = !this.status;
+        this.message = "대표자명을 입력해주세요";
         return;
       }
       if (this.infoTemp.tel === "") {
-        alert("대표연락처를 입력해주세요");
+        this.status = !this.status;
+        this.message = "대표연락처를 입력해주세요";
         return;
       }
       if (this.infoTemp.cnNum === "") {
-        alert("사업자등록번호를 입력해주세요");
+        this.status = !this.status;
+        this.message = "사업자등록번호를 입력해주세요";
         return;
       }
       if (this.infoTemp.address2 === "") {
-        alert("주소를 입력해주세요");
+        this.status = !this.status;
+        this.message = "주소를 입력해주세요";
         return;
       }
       this.$store.commit("common/setLoading", true);

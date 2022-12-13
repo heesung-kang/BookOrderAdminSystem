@@ -1,30 +1,28 @@
 <template>
   <div class="selects">
-    <v-select dense v-model="select" :items="itemList" item-text="item" item-value="value" outlined></v-select>
+    <v-select dense v-model="select" :items="itemList" item-text="item" item-value="value" outlined @input="handleChange"></v-select>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["dafaultValue", "index"],
+  props: ["itemList", "uid", "payType", "sid"],
   data() {
     return {
-      select: 0,
-      itemList: [
-        { item: "정상", value: 0 },
-        { item: "품절", value: 1 },
-        { item: "절판", value: 2 },
-        { item: "재고부족", value: 3 },
-      ],
+      select: "",
     };
   },
-  watch: {
-    select(selectValue) {
-      this.$emit("select", { value: selectValue, index: this.index });
-    },
-  },
   mounted() {
-    this.select = this.dafaultValue;
+    this.payType.forEach(ele => {
+      if (ele.sid === this.sid) {
+        this.select = ele.payType;
+      }
+    });
+  },
+  methods: {
+    handleChange() {
+      this.$emit("change", { value: this.select, uid: this.uid });
+    },
   },
 };
 </script>
@@ -50,7 +48,7 @@ export default {
   .v-select__selections {
     padding: 0 !important;
     .v-select__selection {
-      @include NotoSans(1.3, 500, #000);
+      @include NotoSans(1.6, 500, #000);
     }
   }
   .v-text-field__details {
@@ -78,7 +76,7 @@ export default {
 }
 @include mobile {
   .selects::v-deep {
-    max-width: 100px;
+    max-width: 150px;
     min-width: 110px;
   }
 }

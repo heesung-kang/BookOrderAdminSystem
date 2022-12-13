@@ -11,11 +11,12 @@
           <v-icon>mdi-shield-key</v-icon>
           <input type="password" v-model="password" placeholder="비밀번호를 입력하세요." />
         </div>
-        <button type="submit" class="btn-login mt25">로그인 하기</button>
+        <button type="submit" class="btn-login mt25">로그인</button>
         <p class="error-message">{{ logMessage }}</p>
         <div class="signup"><router-link to="/SignUp">회원가입</router-link> |&nbsp; <router-link to="/FindPw">비밀번호 찾기</router-link></div>
       </form>
     </div>
+    <Toast :status="status" :message="message" />
   </div>
 </template>
 
@@ -26,12 +27,16 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/utils/db";
 import { app } from "@/utils/db";
 const auth = getAuth(app);
+import Toast from "@/components/common/Toast";
 export default {
+  components: { Toast },
   data() {
     return {
       email: "",
       password: "",
       logMessage: "",
+      message: "",
+      status: false,
     };
   },
   methods: {
@@ -47,7 +52,8 @@ export default {
                 const userName = user.displayName.split("-");
                 //1:관리자, 2:출판사, 3:서점
                 if (Number(userName[1]) !== 2) {
-                  alert("출판사회원이 아닙니다.");
+                  this.status = !this.status;
+                  this.message = "출판사회원이 아닙니다.";
                   this.$store.commit("common/setLoading", false);
                 } else {
                   const docSnap = await getDoc(doc(db, "publisherInfo", user.uid));
@@ -104,8 +110,8 @@ export default {
   background-image: url("../../assets/images/bg.jpg");
   z-index: 100;
   .login-box {
-    background: #fff;
-    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 1px;
     padding: 30px;
     width: 400px;
     @include boxshadow(0px, 3px, 6px, 0px, rgba(0, 0, 0, 0.05));
@@ -125,6 +131,7 @@ export default {
     }
     h1 {
       text-align: center;
+      @include NotoSans(2, 700, #fff);
       .icon {
         vertical-align: -6px;
       }
@@ -139,7 +146,7 @@ export default {
     button {
       width: 100%;
       height: 50px;
-      background: #035dba;
+      background: #48c0c1;
       color: #fff;
       border-radius: 5px;
       font-size: 1.8rem;
@@ -149,7 +156,7 @@ export default {
     }
     .flex-between {
       & a {
-        color: rgb(51, 51, 51);
+        color: #fff;
       }
     }
     .error-message {
@@ -159,8 +166,9 @@ export default {
     }
     .signup {
       text-align: right;
+      color: #fff;
       a {
-        color: #333;
+        color: #fff;
       }
     }
   }
