@@ -103,14 +103,24 @@ export default {
   top: 0;
   width: 100vw;
   height: 100vh;
-  background-size: cover;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("../../assets/images/bg.jpg");
-  z-index: 100;
+  background-color: #000;
+  &:before {
+    content: "";
+    background-image: url("../../assets/images/bg.jpg");
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.5;
+  }
   .login-box {
-    background: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    background: #fff;
     border-radius: 1px;
     padding: 30px;
     width: 400px;
@@ -131,7 +141,7 @@ export default {
     }
     h1 {
       text-align: center;
-      @include NotoSans(2, 700, #fff);
+      @include NotoSans(2, 700, #000);
       .icon {
         vertical-align: -6px;
       }
@@ -141,14 +151,14 @@ export default {
       width: 100%;
       border: 1px solid rgb(214, 214, 214);
       padding: 0 10px 0 40px;
-      border-radius: 5px;
+      border-radius: 1px;
     }
     button {
       width: 100%;
       height: 50px;
       background: #48c0c1;
       color: #fff;
-      border-radius: 5px;
+      border-radius: 1px;
       font-size: 1.8rem;
       &:disabled {
         background: #ccc;
@@ -156,7 +166,7 @@ export default {
     }
     .flex-between {
       & a {
-        color: #fff;
+        color: #000;
       }
     }
     .error-message {
@@ -166,9 +176,8 @@ export default {
     }
     .signup {
       text-align: right;
-      color: #fff;
       a {
-        color: #fff;
+        color: #000;
       }
     }
   }

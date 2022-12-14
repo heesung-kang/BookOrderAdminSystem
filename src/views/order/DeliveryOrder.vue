@@ -13,7 +13,7 @@
   </section>
 </template>
 <script>
-import DeliverList from "@/components/deliver/DeliverList";
+import DeliverList from "@/components/order/DeliverDetail";
 export default {
   components: { DeliverList },
   data() {
