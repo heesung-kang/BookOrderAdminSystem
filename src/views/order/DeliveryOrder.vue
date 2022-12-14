@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h2 class="sub-title">주문 상세 보기 및 내역서 회신</h2>
+    <h2 class="sub-title">출고 현황</h2>
     <section class="sub-container">
       <article class="order-info d-flex justify-space-between">
         <div>

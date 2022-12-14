@@ -25,7 +25,7 @@
                 <span v-if="rate.sid === sid"><input type="number" v-model="rate.rate" /></span>
               </span>
             </td>
-            <td><button class="each" @click="booksRateModal(item.uid)">서적별 설정</button></td>
+            <td><button class="btn-xs" @click="booksRateModal(item.uid)">서적별 설정</button></td>
           </tr>
         </tbody>
         <tfoot v-if="shops.length === 0">
@@ -151,18 +151,12 @@ table {
     td {
       border-bottom: 1px solid #ccc;
       text-align: center;
-      height: 30px;
+      height: 40px;
       input {
         border: 1px solid #000;
         width: 50px;
         padding: 0 5px;
         background-color: #fff;
-      }
-      .each {
-        background-color: deepskyblue;
-        color: #fff;
-        padding: 0 5px;
-        border-radius: 3px;
       }
     }
   }

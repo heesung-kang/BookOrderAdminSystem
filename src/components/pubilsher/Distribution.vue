@@ -6,7 +6,7 @@
         <col width="*" />
         <col width="*" />
         <col width="*" />
-        <col width="100" />
+        <col width="110" />
       </colgroup>
       <thead>
         <tr>
@@ -37,7 +37,7 @@
                   class="basic xs"
                   @click="modifyTemp({ id: dis.id, companyName: dis.data.companyName, name: dis.data.name, tel: dis.data.tel })"
                 >
-                  수정
+                  <v-icon class="icon-pen">mdi-pencil</v-icon>수정
                 </button>
               </div>
               <div v-else class="d-flex">
@@ -208,5 +208,9 @@ h3 {
       }
     }
   }
+}
+.icon-pen {
+  color: #000;
+  font-size: 1.5rem;
 }
 </style>

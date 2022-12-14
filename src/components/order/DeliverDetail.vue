@@ -38,7 +38,8 @@
         <div class="d-flex price-info">
           <div class="normal-price"><span v-if="mobile">주문</span> {{ book.data.count }}</div>
           <div class="count">
-            <span v-if="mobile">공급</span> <span :class="{ warning: book.data.count > book.data.reply_count }">{{ book.data.reply_count }}</span>
+            <span v-if="mobile">공급</span>
+            <span :class="{ warning: book.data.count > book.data.reply_count }">{{ book.data.reply_count }}</span>
           </div>
         </div>
         <div><span v-if="mobile">상태</span> {{ book.data.shop_order_status === 3 ? "-" : book.data.shop_order_status === 4 ? "출고" : "완료" }}</div>
