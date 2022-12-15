@@ -212,7 +212,9 @@ export default {
           subject: ele.data.subject,
           author: ele.data.author,
           isbn: ele.data.isbn,
-          price: (ele.data.price * Number(ele.data.supply_rate)) / 100,
+          originPrice: `${ele.data.price.toLocaleString()}원`,
+          supply_rate: `${ele.data.supply_rate}%`,
+          price: `${((ele.data.price * Number(ele.data.supply_rate)) / 100).toLocaleString()}원`,
           reply_count: ele.data.reply_count,
           distribution: ele.data.distribution,
           release_time: this.$date(ele.data.release_time.toDate()).format("YYYY-MM-DD HH:mm:ss"),
@@ -226,10 +228,12 @@ export default {
       booksWS["C1"].v = "제목";
       booksWS["D1"].v = "저자";
       booksWS["E1"].v = "isbn";
-      booksWS["F1"].v = "출고가";
-      booksWS["G1"].v = "수량";
-      booksWS["H1"].v = "배본사";
-      booksWS["I1"].v = "출고지시일";
+      booksWS["F1"].v = "정가";
+      booksWS["G1"].v = "공급률";
+      booksWS["H1"].v = "출고가";
+      booksWS["I1"].v = "수량";
+      booksWS["J1"].v = "배본사";
+      booksWS["K1"].v = "출고지시일";
       booksWS["A1"].s = {
         fill: {
           fgColor: { rgb: "d9ead3" },
@@ -271,6 +275,16 @@ export default {
         },
       };
       booksWS["I1"].s = {
+        fill: {
+          fgColor: { rgb: "d9ead3" },
+        },
+      };
+      booksWS["J1"].s = {
+        fill: {
+          fgColor: { rgb: "d9ead3" },
+        },
+      };
+      booksWS["K1"].s = {
         fill: {
           fgColor: { rgb: "d9ead3" },
         },
