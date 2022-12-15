@@ -112,7 +112,9 @@
 
     <!-- 버튼 영역 -->
     <section>
-      <div v-if="!modify" class="d-flex justify-end mt5"><button class="primary" @click="statusChange">수정</button></div>
+      <div v-if="!modify" class="d-flex justify-end mt5">
+        <button class="primary" @click="statusChange">수정</button>
+      </div>
       <div v-else class="d-flex justify-end mt5">
         <button class="basic mr5" @click="modify = false">취소</button>
         <button class="primary" @click="update">확인</button>

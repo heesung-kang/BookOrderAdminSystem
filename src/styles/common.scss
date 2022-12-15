@@ -139,6 +139,7 @@ button{
     @extend .button;
     background-color:#000 !important;
     @include NotoSans(1.6,700,#fff);
+    font-weight:500 !important;
   }
   &:disabled{
     background-color: #f4f4f4 !important;
@@ -147,9 +148,9 @@ button{
   }
 }
 .btn-xs{
-  background-color:deepskyblue;
+  background-color:#48c0c1;
   color:#fff;
-  padding:0 10px;
+  padding:5px 10px;
   border-radius:3px;
 }
 /*table*/

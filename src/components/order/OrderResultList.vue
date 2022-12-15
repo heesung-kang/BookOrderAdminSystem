@@ -36,7 +36,7 @@
         <div class="final-price"><span v-if="mobile">공급가</span> {{ ((book.data.price * book.data.supply_rate) / 100).toLocaleString() }}원</div>
         <div class="count"><span v-if="mobile">주문</span> {{ book.data.count }}</div>
         <div class="count">
-          <span v-if="mobile">공급</span>
+          <span v-if="mobile" class="mr4">공급</span>
           <input
             type="number"
             class="basic reply-count"
@@ -147,9 +147,7 @@ export default {
         await documentSnapshots.forEach(doc => {
           this.books.push({ id: doc.id, data: doc.data() });
         });
-        setTimeout(() => {
-          this.setSize();
-        }, 500);
+        this.setSize();
       } catch (e) {
         console.log(e);
       }
@@ -196,7 +194,7 @@ export default {
           select.forEach(ele => {
             ele.style.maxWidth = `${this.titleMaxWidth}px`;
           });
-        }, 500);
+        }, 200);
       } else {
         this.listWidth = document.querySelector(".body").clientWidth;
         this.titleMaxWidth = this.listWidth - 630;
@@ -205,7 +203,7 @@ export default {
           select.forEach(ele => {
             ele.style.maxWidth = `${this.titleMaxWidth}px`;
           });
-        }, 500);
+        }, 200);
       }
     },
   },
