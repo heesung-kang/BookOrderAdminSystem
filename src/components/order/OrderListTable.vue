@@ -10,7 +10,7 @@
         <th>상태</th>
         <th>수량</th>
         <th>발주일시</th>
-        <!--        <th>결제방식</th>-->
+        <th>결제방식</th>
       </tr>
     </thead>
     <tbody>
@@ -23,7 +23,7 @@
         <td v-if="item.shop_order_status === status">{{ status === 3 ? "출고대기" : status === 4 ? "출고" : "완료" }}</td>
         <td v-if="item.shop_order_status === status">{{ item.totalCount }}</td>
         <td v-if="item.shop_order_status === status">{{ item.timestamp }}</td>
-        <!--        <td>{{ item.payType === 0 ? "일반결제" : "월결제" }}</td>-->
+        <td v-if="item.shop_order_status === status">{{ item.payType === 0 ? "일반정산" : "월정산" }}</td>
       </tr>
     </tbody>
   </table>

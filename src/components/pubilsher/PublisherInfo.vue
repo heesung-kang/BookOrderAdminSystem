@@ -73,8 +73,7 @@
     <div class="d-flex justify-space-between mt50">
       <h3>정산 정보</h3>
       <div>
-        <!--        <router-link to="/PayType" class="btn-xs mr10">서점별 결재방식 설정</router-link-->
-        <!--        >-->
+        <router-link to="/PayType" class="btn-xs mr10">서점별 결재방식 설정</router-link>
         <router-link to="/ShopRate" class="btn-xs">서점별 공급률 설정</router-link>
       </div>
     </div>
