@@ -244,6 +244,10 @@ table {
     @include NotoSans(1.4, 500, #fff);
   }
 }
+.selectWrap {
+  display: flex;
+  justify-content: center;
+}
 @include mobile {
   .book-list {
     padding: 3px;
