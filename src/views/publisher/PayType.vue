@@ -58,8 +58,8 @@ export default {
       sid: "",
       selectMutations: [],
       itemList: [
-        { item: "일반결제", value: 0 },
-        { item: "월결제", value: 1 },
+        { item: "일반정산", value: 0 },
+        { item: "월정산", value: 1 },
       ],
       message: "",
       status: false,
