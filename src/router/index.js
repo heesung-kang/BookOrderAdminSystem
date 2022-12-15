@@ -96,15 +96,6 @@ const router = new VueRouter({
         contents: () => import("@/views/books/BookManagement.vue"),
       },
     },
-    {
-      path: "/PayType",
-      name: "PayType",
-      components: {
-        lnb,
-        footer,
-        contents: () => import("@/views/publisher/PayType.vue"),
-      },
-    },
     //404
     {
       path: "*",

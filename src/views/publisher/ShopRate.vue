@@ -13,6 +13,7 @@
             <th>서점명</th>
             <th>이메일</th>
             <th>서점 공급률</th>
+            <th>결제방식</th>
             <th></th>
           </tr>
         </thead>
@@ -24,6 +25,11 @@
               <span v-for="(rate, index) in item.data.shopRate" :key="index">
                 <span v-if="rate.sid === sid"><input type="number" v-model="rate.rate" /></span>
               </span>
+            </td>
+            <td>
+              <div class="selectWrap">
+                <SelectPayType :itemList="itemList" @change="change" :uid="item.uid" :payType="item.data.payType" :sid="sid" />
+              </div>
             </td>
             <td><button class="btn-xs" @click="booksRateModal(item.uid)">서적별 설정</button></td>
           </tr>
@@ -49,9 +55,10 @@ import TableSkeleton from "@/skeletons/TableSkeleton";
 import ModalBookRate from "@/components/modal/ModalBookRate.vue";
 import { getPopupOpt } from "@/utils/modal";
 import Toast from "@/components/common/Toast";
+import SelectPayType from "@/components/form/SelectPayType";
 export default {
   name: "PublisherList",
-  components: { TableSkeleton, Toast },
+  components: { TableSkeleton, Toast, SelectPayType },
   data() {
     return {
       origin: [],
@@ -62,6 +69,11 @@ export default {
       oldRate: [],
       message: "",
       status: false,
+      selectMutations: [],
+      itemList: [
+        { item: "일반정산", value: 0 },
+        { item: "월정산", value: 1 },
+      ],
     };
   },
   computed: {
@@ -85,6 +97,11 @@ export default {
         documentSnapshots.forEach(doc => {
           this.origin.push({ uid: doc.id, data: doc.data() });
           this.shops.push({ uid: doc.id, data: doc.data() });
+          doc.data().payType.forEach(ele => {
+            if (this.sid === ele.sid) {
+              this.selectMutations.push({ uid: doc.id, value: ele.payType });
+            }
+          });
         });
         this.$store.commit("common/setSkeleton", false);
       } catch (e) {
@@ -113,6 +130,14 @@ export default {
               batch.set(shopRef, { ...ele.data, shopRate: [...maintain, { sid: this.sid, rate: elm.rate }] });
             }
           });
+          const oldPayType = ele.data.payType.filter(payType => {
+            if (payType.sid !== this.sid) {
+              return payType;
+            }
+          });
+          this.selectMutations.forEach(elm =>
+            ele.uid === elm.uid ? batch.set(shopRef, { ...ele.data, payType: [...oldPayType, { sid: this.sid, payType: elm.value }] }) : null,
+          );
         });
         await batch.commit();
         await this.load();
@@ -123,6 +148,16 @@ export default {
         this.$store.commit("common/setLoading", false);
         console.log(e);
       }
+    },
+    //select change
+    change(payload) {
+      this.selectMutations = this.selectMutations.map(ele => {
+        if (ele.uid === payload.uid) {
+          return payload;
+        } else {
+          return ele;
+        }
+      });
     },
     search() {
       if (this.keyword !== "") {

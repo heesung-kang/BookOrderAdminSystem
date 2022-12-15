@@ -121,10 +121,11 @@ export default {
     width: 100px;
   }
   .subject {
-    width: calc(100% - 150px);
+    width: calc(100% - 160px);
   }
   .init {
     width: 30px;
+    margin-right: 10px;
   }
 }
 li {
