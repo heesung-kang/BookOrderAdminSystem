@@ -110,6 +110,7 @@ export default {
   align-items: center;
   justify-content: center;
   background-color: #000;
+  z-index: 10000;
   &:before {
     content: "";
     background-image: url("../../assets/images/bg.jpg");

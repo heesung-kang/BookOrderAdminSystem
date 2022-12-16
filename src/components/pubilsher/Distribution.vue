@@ -31,13 +31,10 @@
             <input type="text" class="basic" v-model="telTemp" v-else />
           </td>
           <td>
-            <div class="d-flex">
+            <div class="d-flex justify-center">
               <div v-if="modify !== dis.id">
-                <button
-                  class="basic xs"
-                  @click="modifyTemp({ id: dis.id, companyName: dis.data.companyName, name: dis.data.name, tel: dis.data.tel })"
-                >
-                  <v-icon class="icon-pen">mdi-pencil</v-icon>수정
+                <button class="pen" @click="modifyTemp({ id: dis.id, companyName: dis.data.companyName, name: dis.data.name, tel: dis.data.tel })">
+                  <v-icon class="icon-pen">mdi-pencil</v-icon>
                 </button>
               </div>
               <div v-else class="d-flex">
@@ -212,5 +209,8 @@ h3 {
 .icon-pen {
   color: #000;
   font-size: 1.5rem;
+}
+.pen {
+  vertical-align: -5px;
 }
 </style>
