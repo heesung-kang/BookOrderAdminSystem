@@ -175,7 +175,10 @@ export default {
             try {
               await this.shops.forEach(ele => {
                 const docRef = doc(db, "shopInfo", ele.id);
-                batch.update(docRef, { shopRate: [...ele.data.shopRate, { sid: this.sid, rate: "" }] });
+                batch.update(docRef, {
+                  shopRate: [...ele.data.shopRate, { sid: this.sid, rate: "" }],
+                  payType: [...ele.data.payType, { sid: this.sid, payType: "" }],
+                });
               });
               await batch.commit();
             } catch (e) {
