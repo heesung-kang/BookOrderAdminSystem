@@ -8,7 +8,7 @@
       <span class="date-picker mobile-margin"><DatePicker @updateDate="setStartDate" :clear="clear" /></span>
       <span class="to">To</span>
       <span class="date-picker"><DatePicker @updateDate="setEndDate" :clear="clear" /></span>
-      <button class="basic btn" @click="search">검색1</button>
+      <button class="basic btn" @click="search">검색</button>
     </span>
     <Toast :status="status" :message="message" />
   </section>
