@@ -21,10 +21,10 @@
       <li class="d-flex align-center" v-for="(book, index) in books" :key="index">
         <div class="d-flex align-center info-wrap">
           <div class="book-info">
-            <h3 class="book-name" @mouseover="tooltipToggle(true)" @mouseout="tooltipToggle(false)">
+            <h3 class="book-name" @mouseover="books[index].tooltip = true" @mouseout="books[index].tooltip = false">
               {{ book.data.subject }}
             </h3>
-            <span :class="[{ active: isActive }, 'tooltip']">{{ book.data.subject }}</span>
+            <span :class="[{ active: book.tooltip }, 'tooltip']">{{ book.data.subject }}</span>
             <div class="author">{{ book.data.author }}</div>
           </div>
         </div>
@@ -63,7 +63,7 @@
       <span style="display: flex; align-items: center" v-if="itemList.length > 0"
         ><span class="mr10">배본 설정: </span><Selects :itemList="itemList" @change="changeSelect"
       /></span>
-      <span v-else>배본사를 설정하세요</span>
+      <span v-else>[출판사 정보]에서 배본사를 설정하세요</span>
       <button class="primary ml10 order" @click="order" :disabled="itemList.length === 0">출고지시</button>
     </div>
     <!-- //배본 설정 -->
@@ -143,7 +143,7 @@ export default {
         );
         const documentSnapshots = await getDocs(first);
         await documentSnapshots.forEach(doc => {
-          this.books.push({ id: doc.id, data: doc.data() });
+          this.books.push({ id: doc.id, data: doc.data(), tooltip: false });
         });
         setTimeout(() => {
           this.setSize();
@@ -312,9 +312,6 @@ export default {
           });
         }, 200);
       }
-    },
-    tooltipToggle(status) {
-      this.isActive = status;
     },
   },
 };

@@ -5,6 +5,9 @@
       <article class="order-info d-flex justify-space-between">
         <div>
           서점명: <strong>{{ shopName }}</strong>
+          <span class="ml20"
+            >전화번호: <strong>{{ shopInfo.tel }}</strong></span
+          >
         </div>
         <div>{{ date }}</div>
       </article>
@@ -14,6 +17,8 @@
 </template>
 <script>
 import DeliverList from "@/components/order/DeliverDetail";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/utils/db";
 export default {
   components: { DeliverList },
   data() {
@@ -23,7 +28,17 @@ export default {
       shopName: this.$route.params.shopName,
       orderRealTimeId: this.$route.params.orderRealTimeId,
       uid: this.$route.params.uid,
+      shopInfo: "",
     };
+  },
+  async mounted() {
+    try {
+      const docRef = doc(db, "shopInfo", this.uid);
+      const docSnap = await getDoc(docRef);
+      this.shopInfo = docSnap.data();
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
   },
 };
 </script>
